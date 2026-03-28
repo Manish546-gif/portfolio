@@ -1,0 +1,61 @@
+@import "tailwindcss";
+
+
+@font-face {
+  font-family: 'Gorditas';
+  src: url('/Gorditas-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Gorditas';
+  src: url('/Gorditas-Bold.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'GreatVibes';
+  src: url('/GreatVibes-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+
+:root {
+  --stair-dark: #5a3b1f;
+  --stair-light: #f6ead8;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+  overflow-y: hidden;
+}
+
+body {
+  margin: 0;
+  background: var(--stair-light);
+  color: var(--stair-dark);
+}
+
+@keyframes grainMarquee {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 200px 0;
+  }
+}
+
+.grain-marquee {
+  animation: grainMarquee 5s linear infinite;
+  will-change: background-position;
+}
+
+@font-face {
+  font-family: 'GermaniaOne';
+  src: url('/GermaniaOne-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
