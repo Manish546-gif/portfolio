@@ -1,37 +1,29 @@
-import React from 'react'
-import { Route, Routes } from 'react-router-dom'
-import Home from './pages/Home'
-import About from './pages/About'
-import Contact from './pages/Contact'
-import ElasticCursor from './components/Common/ElasticCursor'
+import Navbar from './components/Navbar'
+import Footer from './components/Footer'
+import Home from './sections/Home'
+import Work from './sections/Work'
+import About from './sections/About'
 import useLenisSmoothScroll from './hooks/useLenisSmoothScroll'
-import Navbar from './components/Common/Navbar'
-import GrainOverlay from './components/Common/GrainOverlay'
-import Work from './pages/Work'
-import Stairs from './components/Common/Stairs'
-import Footer from './components/Common/Footer'
+import Cursor from './components/Cursor'
 
-const App = () => {
+import Overlay from './components/Overlay'
+import RhythmTetris from './game/Rhythmtetris'
+import Landing2 from './sections/Landing2'
+
+export default function App() {
   useLenisSmoothScroll(true)
 
   return (
-    <div className='min-h-screen bg-[#f6ead8] text-[#5a3b1f]'>
-      <ElasticCursor />
+    <div className="w-full relative">
+      <Cursor />
+      <Overlay />
       <Navbar />
-      <GrainOverlay />
-
-      <Stairs>
-        <Routes>
-          <Route path='/' element={<Home isReady={true} />} />
-          <Route path='/about' element={<About />} />
-          <Route path='/work' element={<Work />} />
-          <Route path='/contact' element={<Contact />} />
-        </Routes>
-      </Stairs>
-
+      <Home />
+   <Landing2/>
+      <Work />
+      <About />
+      {/* <RhythmTetris /> */}
       <Footer />
     </div>
   )
 }
-
-export default App

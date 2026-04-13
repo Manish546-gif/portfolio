@@ -1,29 +1,12 @@
 @import "tailwindcss";
 
 
-@font-face {
-  font-family: 'Gorditas';
-  src: url('/Gorditas-Regular.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'Gorditas';
-  src: url('/Gorditas-Bold.ttf') format('truetype');
-  font-weight: bold;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'GreatVibes';
-  src: url('/GreatVibes-Regular.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-}
+
 
 
 :root {
-  --stair-dark: #5a3b1f;
-  --stair-light: #f6ead8;
+  --stair-dark: #ffffff;
+  --stair-light: #09090b;
 }
 
 html,
@@ -35,8 +18,11 @@ body,
 
 body {
   margin: 0;
-  background: var(--stair-light);
-  color: var(--stair-dark);
+  background: #09090b;
+  color: #ffffff;
+}
+::-webkit-scrollbar{
+  display: none;
 }
 
 @keyframes grainMarquee {
@@ -53,9 +39,91 @@ body {
   will-change: background-position;
 }
 
+@keyframes rotateStar {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.rotate-star {
+  animation: rotateStar 7s linear infinite;
+}
+
 @font-face {
   font-family: 'GermaniaOne';
   src: url('/GermaniaOne-Regular.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
+}
+
+@font-face {
+  font-family: 'Compacta';
+  src: url('/unicode.compacta.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'FleurDeLeah';
+  src: url('/FleurDeLeah-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'thunder-blackl';
+  src: url('/Thunder-BlackL.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@keyframes blob {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+  25% {
+    transform: translate(20px, -50px) scale(1.1);
+  }
+  50% {
+    transform: translate(-20px, 20px) scale(0.9);
+  }
+  75% {
+    transform: translate(50px, 50px) scale(1.05);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-blob {
+  animation: blob 10s infinite;
+}
+
+.animation-delay-2000 {
+  animation-delay: 2s;
+}
+
+.animation-delay-4000 {
+  animation-delay: 4s;
+}
+
+/* Remove scrollbar from body and html */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  overflow-y: scroll;
+}
+
+/* Add scroll-padding for fixed navbar */
+html {
+  scroll-padding-top: 80px;
 }
