@@ -4,10 +4,9 @@ import Home from './sections/Home'
 import Work from './sections/Work'
 import About from './sections/About'
 import useLenisSmoothScroll from './hooks/useLenisSmoothScroll'
-import Cursor from './components/Cursor'
 
-import Overlay from './components/Overlay'
-import RhythmTetris from './game/Rhythmtetris'
+
+
 import Landing2 from './sections/Landing2'
 import MyPhilosophy from './sections/MyPhilosophy'
 
