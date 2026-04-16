@@ -170,7 +170,7 @@ const BulletParagraph = ({ children, delay = 0 }) => (
     transition={{ duration: 0.5, delay }}
     viewport={{ once: true }}
     className="leading-relaxed group flex items-start gap-3"
-    style={{ fontFamily: 'GermaniaOne', letterSpacing: '0.08em' }}
+    style={{ fontFamily: 'PPEditorialNew', letterSpacing: '0.08em' }}
   >
     <span className="inline-block mt-2 h-2 w-4 flex-shrink-0 bg-black transition-all duration-300 group-hover:w-6 group-hover:bg-orange-500" />
     <span>{children}</span>

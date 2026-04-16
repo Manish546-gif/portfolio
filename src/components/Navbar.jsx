@@ -224,6 +224,8 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
   const [time, setTime] = useState('')
   const [scrolled, setScrolled] = useState(false)
+  const [isHidden, setIsHidden] = useState(false)
+  const [lastScrollY, setLastScrollY] = useState(0)
 
   useEffect(() => {
     const tick = () => {
@@ -236,10 +238,25 @@ export default function Navbar() {
   }, [])
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20)
+    const onScroll = () => {
+      const currentScrollY = window.scrollY
+      
+      // Show navbar when scrolling up or near top
+      if (currentScrollY < lastScrollY || currentScrollY < 100) {
+        setIsHidden(false)
+      } 
+      // Hide navbar when scrolling down
+      else if (currentScrollY > lastScrollY && currentScrollY > 100) {
+        setIsHidden(true)
+      }
+      
+      setLastScrollY(currentScrollY)
+      setScrolled(currentScrollY > 20)
+    }
+    
     window.addEventListener('scroll', onScroll)
     return () => window.removeEventListener('scroll', onScroll)
-  }, [])
+  }, [lastScrollY])
 
   useEffect(() => {
     document.body.style.overflow = isOpen ? 'hidden' : ''
@@ -262,19 +279,25 @@ export default function Navbar() {
   return (
     <>
       {/* ════════════════════════════════════════════════
-          TOP BAR — white bg, black text
+          TOP BAR — transparent, slides up on scroll down
       ════════════════════════════════════════════════ */}
       <motion.header
         className="fixed top-0 left-0 right-0 z-[100]"
         style={{
-          backgroundColor: scrolled && !isOpen ? 'rgba(255,255,255,0.92)' : 'transparent',
-          backdropFilter: scrolled && !isOpen ? 'blur(12px)' : 'none',
-          borderBottom: scrolled && !isOpen ? '1px solid rgba(0,0,0,0.07)' : '1px solid transparent',
+          backgroundColor: 'transparent',
+          backdropFilter: 'none',
+          borderBottom: '1px solid transparent',
           transition: 'background-color 0.4s ease, border-color 0.4s ease, backdrop-filter 0.4s ease',
         }}
         initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.5, delay: 0.1 }}
+        animate={{ 
+          opacity: 1,
+          y: isHidden ? '-100%' : '0%'
+        }}
+        transition={{ 
+          opacity: { duration: 0.5, delay: 0.1 },
+          y: { duration: 0.3, ease: EXPO }
+        }}
       >
         <div className="flex items-center justify-between px-6 md:px-10 py-5">
 
@@ -292,9 +315,8 @@ export default function Navbar() {
                     fontFamily: "'Cormorant Garamond','Georgia',serif",
                     fontSize: '22px',
                     letterSpacing: '0.06em',
-                    color: scrolled ? '#111' : '#fff',
+                    color: '#000000',
                     fontWeight: 700,
-                    transition: 'color 0.4s ease',
                   }}
                   initial={{ y: '110%' }}
                   animate={{ y: 0 }}
@@ -310,7 +332,7 @@ export default function Navbar() {
                     fontFamily: "'Cormorant Garamond','Georgia',serif",
                     fontSize: '22px',
                     letterSpacing: '0.06em',
-                    color: PINK,
+                    color: '#000000',
                     fontWeight: 700,
                     fontStyle: 'italic',
                   }}
@@ -330,9 +352,8 @@ export default function Navbar() {
             style={{ 
               fontSize: '9px', 
               letterSpacing: '0.24em', 
-              color: scrolled ? 'rgba(0,0,0,0.4)' : 'rgba(255,255,255,0.6)', 
+              color: '#000000', 
               fontFamily: "'DM Sans','Inter',sans-serif",
-              transition: 'color 0.4s ease',
             }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -351,24 +372,24 @@ export default function Navbar() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.4, duration: 0.5 }}
-              style={{ color: scrolled ? '#111' : '#fff', transition: 'color 0.4s ease' }}
+              style={{ color: '#000000' }}
             >
               <motion.span
                 className="font-bold uppercase hidden sm:block"
-                style={{ fontSize: '10px', letterSpacing: '0.2em', fontFamily: "'DM Sans','Inter',sans-serif", color: scrolled ? '#111' : '#fff', transition: 'color 0.4s ease' }}
+                style={{ fontSize: '10px', letterSpacing: '0.2em', fontFamily: "'DM Sans','Inter',sans-serif", color: '#000000' }}
                 animate={{ opacity: isOpen ? 0 : 1, x: isOpen ? 6 : 0 }}
                 transition={{ duration: 0.22, ease: EXPO }}
               >
                 {isOpen ? 'Close' : 'Menu'}
               </motion.span>
               <div className="flex flex-col gap-[5px] w-[26px]">
-                <motion.span className="block h-px w-full" style={{ backgroundColor: '#111' }}
+                <motion.span className="block h-px w-full" style={{ backgroundColor: '#000000' }}
                   animate={{ rotate: isOpen ? 45 : 0, y: isOpen ? 7 : 0 }}
                   transition={{ duration: 0.38, ease: EXPO }} />
-                <motion.span className="block h-px" style={{ backgroundColor: '#111', width: '62%' }}
+                <motion.span className="block h-px" style={{ backgroundColor: '#000000', width: '62%' }}
                   animate={{ scaleX: isOpen ? 0 : 1, opacity: isOpen ? 0 : 1 }}
                   transition={{ duration: 0.22, ease: EXPO }} />
-                <motion.span className="block h-px w-full" style={{ backgroundColor: '#111' }}
+                <motion.span className="block h-px w-full" style={{ backgroundColor: '#000000' }}
                   animate={{ rotate: isOpen ? -45 : 0, y: isOpen ? -7 : 0 }}
                   transition={{ duration: 0.38, ease: EXPO }} />
               </div>

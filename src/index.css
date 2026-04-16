@@ -21,6 +21,14 @@ body {
   background: #09090b;
   color: #ffffff;
 }
+
+p {
+  font-family: 'PPEditorialNew', sans-serif;
+}
+
+li {
+  font-family: 'PPEditorialNew', sans-serif;
+}
 ::-webkit-scrollbar{
   display: none;
 }
@@ -73,7 +81,28 @@ body {
 }
 @font-face {
   font-family: 'thunder-blackl';
-  src: url('/Thunder-BlackL.ttf') format('truetype');
+  src: url('/Thunder-BlackLC.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'PPEditorialNew';
+  src: url('/PPEditorialNew-UltralightItalic.otf') format('opentype');
+  font-weight: 200;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'PPPlayground';
+  src: url('/PPPlayground-Medium.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Splash';
+  src: url('/Splash-Regular.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
