@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import icon from '../assets/aster.svg'
 
 /* ─── constants ─────────────────────────────────── */
 const SCRAMBLE_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&";
@@ -228,8 +229,9 @@ export default function About() {
       <div ref={cursorDotRef} className="ph-dot" />
 
       <section
+        id="about"
         ref={sectionRef}
-        className="ph-root"
+        className="ph-root border-b-2 border-[#1A0A14]"
         style={{
           backgroundColor: "#FFFFFF",
           backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23n)' opacity='0.045'/%3E%3C/svg%3E")`,
@@ -243,13 +245,11 @@ export default function About() {
       >
         <div className="ph-noise" />
 
-
-
-        {/* Two columns */}
-        <div style={{ display:"flex", flex:1, width:"100%", position:"relative", zIndex:2 }}>
+        {/* Two columns - responsive layout */}
+        <div className="flex flex-col md:flex-row flex-1 w-full relative z-[2] md:min-h-screen">
 
           {/* ── LEFT ── */}
-          <div style={{ display:"flex", flexDirection:"column", gap:30, width:"55%", paddingLeft:64, paddingTop:40, paddingBottom:40, minHeight:"100vh" }}>
+          <div className="flex flex-col gap-8 md:gap-[30px] w-full md:w-[55%] px-4 md:px-16 py-8 md:py-10">
 
             {/* CRAFTING */}
             <div style={{ lineHeight:"0.88", userSelect:"none" }}>
@@ -312,7 +312,14 @@ export default function About() {
               <span style={{ fontFamily:"'Bebas Neue',sans-serif", letterSpacing:"0.15em", fontSize:13, color:"#1a0a14", fontWeight:500 }}>
                 MY PHILOSOPHY
               </span>
-              <button ref={btnRef} className="ph-btn flex items-center justify-center w-14 h-14 rounded-full bg-slate-900 hover:bg-slate-800 flex-shrink-0 transition-all duration-300">
+              <button 
+                ref={btnRef} 
+                onClick={() => {
+                  const el = document.getElementById("philosophy");
+                  if (el) window.__lenis?.scrollTo(el, { offset: 0, duration: 1.5 });
+                }}
+                className="ph-btn flex items-center justify-center w-14 h-14 rounded-full bg-slate-900 hover:bg-slate-800 flex-shrink-0 transition-all duration-300"
+              >
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
                   <path d="M12 5v14M12 19l-7-7M12 19l7-7"/>
                 </svg>
@@ -324,22 +331,28 @@ export default function About() {
           {/* <div className={`ph-divider ${entered ? "go" : ""}`} style={{ margin:"40px 0" }} /> */}
 
           {/* ── RIGHT ── */}
-          <div style={{ display:"flex", flexDirection:"column", justifyContent:"flex-start", width:"45%", paddingLeft:40, paddingRight:48, paddingTop:40, position:"relative" }}>
-             <div className="h-100 w-full"></div>
+          <div className="flex flex-col justify-start w-full md:w-[45%] px-4 md:px-12 md:pl-10 py-8 md:py-10 relative border-t md:border-t-0 md:border-l border-gray-300/40">
+             <div className="h-32 md:h-80 w-full md:pr-26">
+              <div className="h-20 md:h-30 w-full gap-2 md:gap-5 flex justify-end">
+                <img className="h-[90%] w-auto" src={icon} alt="" />
+                <img className="h-[90%] w-auto" src={icon} alt="" />
+                <img className="h-[90%] w-auto" src={icon} alt="" />
+              </div>
+             </div>
             {/* WHAT I DO */}
             <div
-              className={`ph-fade ${entered ? "go" : ""}`}
-              style={{ display:"flex", alignItems:"center",marginLeft:200, gap:12, marginBottom:32, transitionDelay:"0.5s" }}
+              className={`ph-fade flex items-center gap-3 md:gap-12 mb-6 md:mb-8 ml-0 md:ml-52 ${entered ? "go" : ""}`}
+              style={{ transitionDelay:"0.5s" }}
             >
-              <span style={{ fontSize:11, color:"#1a0a14", opacity:0.4, fontFamily:"'Bebas Neue',sans-serif" }}>◀</span>
-              <span style={{ fontFamily:"'Bebas Neue',sans-serif", letterSpacing:"0.25em", color:"#1a0a14", fontSize:11 }}>WHAT I DO</span>
-              <span style={{ fontSize:11, color:"#1a0a14", opacity:0.4, fontFamily:"'Bebas Neue',sans-serif" }}>▶</span>
+              <span style={{ fontSize: "11px", color:"#1a0a14", opacity:0.4, fontFamily:"'Bebas Neue',sans-serif" }}>◀</span>
+              <span style={{ fontFamily:"'Bebas Neue',sans-serif", letterSpacing:"0.25em", color:"#1a0a14", fontSize: "11px" }}>WHAT I DO</span>
+              <span style={{ fontSize: "11px", color:"#1a0a14", opacity:0.4, fontFamily:"'Bebas Neue',sans-serif" }}>▶</span>
             </div>
 
             {/* Quote */}
             <blockquote
               className={entered ? "ph-quote-go" : ""}
-              style={{ fontFamily:"'Playfair Display',serif", fontStyle:"italic",textAlign:'center', fontWeight:400, color:"#1a0a14", lineHeight:1.2, fontSize:"clamp(28px,3.8vw,44px)", maxWidth:520, margin:0 }}
+              style={{ fontFamily:"'Playfair Display',serif", fontStyle:"italic",textAlign:'center', fontWeight:400, color:"#1a0a14", lineHeight:1.2, fontSize:"clamp(20px,5vw,44px)", maxWidth: window.innerWidth < 768 ? "100%" : 520, margin:0 }}
             >
               {quoteWords.map((w, i) => (
                 <span key={i} className="ph-qword" style={{ "--wi": i }}>{w}</span>

@@ -5,12 +5,13 @@
  */
 
 import { useState, useEffect, useRef, useCallback } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence, useMotionValue, useSpring } from 'framer-motion'
 
 const EXPO = [0.76, 0, 0.24, 1]
 const CIRC = [0.85, 0, 0.15, 1]
-const PINK = '#000000'          // main pink accent
-const PINK_DARK = '#000000'     // darker pink for hover states
+const PINK = '#1A0A14'          // main dark color
+const PINK_DARK = '#1A0A14'     // same dark color for hover states
 
 /* ── Split hover text ─────────────────────────────────────────────────────── */
 function SplitText({ text, isHovered, baseDelay = 0, className = '' }) {
@@ -122,7 +123,7 @@ function BigLink({ index, label, sub, onClick, delay }) {
               fontWeight: 700,
               fontStyle: 'italic',
               letterSpacing: '-0.02em',
-              color: 'transparent',
+              color: PINK,
               WebkitTextStroke: `1.5px ${PINK}`,
               display: 'block',
               userSelect: 'none',
@@ -179,7 +180,7 @@ function BigLink({ index, label, sub, onClick, delay }) {
       {/* Hover fill bar */}
       <motion.div
         className="absolute inset-0 pointer-events-none"
-        style={{ backgroundColor: `${PINK}08`, originX: 0 }}
+        style={{ backgroundColor: `${PINK}12`, originX: 0 }}
         initial={false}
         animate={{ scaleX: hov ? 1 : 0, transformOrigin: '0% 50%' }}
         transition={{ duration: 0.4, ease: EXPO }}
@@ -197,7 +198,7 @@ function SocialLink({ label, href, delay }) {
       target="_blank"
       rel="noopener noreferrer"
       className="relative inline-block pb-[2px] cursor-pointer"
-      style={{ color: 'rgba(0,0,0,0.4)', fontSize: '10px', letterSpacing: '0.16em' }}
+      style={{ color: PINK, fontSize: '10px', letterSpacing: '0.16em' }}
       initial={{ opacity: 0, y: 14 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay, duration: 0.5, ease: EXPO }}
@@ -221,6 +222,7 @@ function SocialLink({ label, href, delay }) {
    MAIN NAVBAR
 ══════════════════════════════════════════════════════════════════════════ */
 export default function Navbar() {
+  const navigate = useNavigate()
   const [isOpen, setIsOpen] = useState(false)
   const [time, setTime] = useState('')
   const [scrolled, setScrolled] = useState(false)
@@ -315,7 +317,7 @@ export default function Navbar() {
                     fontFamily: "'Cormorant Garamond','Georgia',serif",
                     fontSize: '22px',
                     letterSpacing: '0.06em',
-                    color: '#000000',
+                    color: PINK,
                     fontWeight: 700,
                   }}
                   initial={{ y: '110%' }}
@@ -332,7 +334,7 @@ export default function Navbar() {
                     fontFamily: "'Cormorant Garamond','Georgia',serif",
                     fontSize: '22px',
                     letterSpacing: '0.06em',
-                    color: '#000000',
+                    color: PINK,
                     fontWeight: 700,
                     fontStyle: 'italic',
                   }}
@@ -352,7 +354,7 @@ export default function Navbar() {
             style={{ 
               fontSize: '9px', 
               letterSpacing: '0.24em', 
-              color: '#000000', 
+              color: PINK, 
               fontFamily: "'DM Sans','Inter',sans-serif",
             }}
             initial={{ opacity: 0 }}
@@ -372,24 +374,24 @@ export default function Navbar() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.4, duration: 0.5 }}
-              style={{ color: '#000000' }}
+              style={{ color: PINK }}
             >
               <motion.span
                 className="font-bold uppercase hidden sm:block"
-                style={{ fontSize: '10px', letterSpacing: '0.2em', fontFamily: "'DM Sans','Inter',sans-serif", color: '#000000' }}
+                style={{ fontSize: '10px', letterSpacing: '0.2em', fontFamily: "'DM Sans','Inter',sans-serif", color: PINK }}
                 animate={{ opacity: isOpen ? 0 : 1, x: isOpen ? 6 : 0 }}
                 transition={{ duration: 0.22, ease: EXPO }}
               >
                 {isOpen ? 'Close' : 'Menu'}
               </motion.span>
               <div className="flex flex-col gap-[5px] w-[26px]">
-                <motion.span className="block h-px w-full" style={{ backgroundColor: '#000000' }}
+                <motion.span className="block h-px w-full" style={{ backgroundColor: PINK }}
                   animate={{ rotate: isOpen ? 45 : 0, y: isOpen ? 7 : 0 }}
                   transition={{ duration: 0.38, ease: EXPO }} />
-                <motion.span className="block h-px" style={{ backgroundColor: '#000000', width: '62%' }}
+                <motion.span className="block h-px" style={{ backgroundColor: PINK, width: '62%' }}
                   animate={{ scaleX: isOpen ? 0 : 1, opacity: isOpen ? 0 : 1 }}
                   transition={{ duration: 0.22, ease: EXPO }} />
-                <motion.span className="block h-px w-full" style={{ backgroundColor: '#000000' }}
+                <motion.span className="block h-px w-full" style={{ backgroundColor: PINK }}
                   animate={{ rotate: isOpen ? -45 : 0, y: isOpen ? -7 : 0 }}
                   transition={{ duration: 0.38, ease: EXPO }} />
               </div>
@@ -442,7 +444,7 @@ export default function Navbar() {
 
         {/* ── PANEL BODY: two-column grid ───────────────────────── */}
         <div
-          className="flex-1 grid pt-[88px] overflow-hidden"
+          className="flex-1 grid pt-[88px]"
           style={{ gridTemplateColumns: '1fr auto', gridTemplateRows: '1fr' }}
         >
           {/* LEFT — big nav links */}
@@ -459,32 +461,42 @@ export default function Navbar() {
             ))}
           </div>
 
-          {/* RIGHT — meta column (desktop only) */}
+          {/* RIGHT — clean panel with Play Tetris button and essentials */}
           <div
-            className="hidden lg:flex flex-col justify-between py-10 pr-14 pl-10 w-[260px] xl:w-[300px]"
+            className="flex flex-col justify-between py-10 pr-6 md:pr-14 pl-6 md:pl-10 w-full md:w-auto md:min-w-[260px] lg:min-w-[300px]"
             style={{ borderLeft: '1px solid rgba(0,0,0,0.07)' }}
           >
-            {/* Top: tagline */}
+            {/* Play Tetris Button */}
             {isOpen && (
-              <motion.div
-                className="flex flex-col gap-3"
+              <motion.button
+                onClick={() => {
+                  navigate('/tetris')
+                  setIsOpen(false)
+                }}
+                className="px-5 py-3 rounded-sm font-bold uppercase transition-all duration-300"
+                style={{
+                  fontSize: '11px',
+                  letterSpacing: '0.15em',
+                  color: '#ffffff',
+                  backgroundColor: PINK,
+                  border: `1.5px solid ${PINK}`,
+                }}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3, duration: 0.6, ease: EXPO }}
+                whileHover={{
+                  backgroundColor: '#ffffff',
+                  color: PINK,
+                }}
               >
-                <span className="font-bold uppercase" style={{ fontSize: '9px', letterSpacing: '0.22em', color: 'rgba(0,0,0,0.3)', fontFamily: "'DM Sans',sans-serif" }}>
-                  Currently
-                </span>
-                <p style={{ fontSize: '13px', lineHeight: 1.65, color: 'rgba(0,0,0,0.5)', fontWeight: 400, letterSpacing: '0.02em', fontFamily: "'DM Sans',sans-serif" }}>
-                  Open to freelance,<br />collaborations &amp; full-time roles.
-                </p>
-              </motion.div>
+                Play Tetris
+              </motion.button>
             )}
 
-            {/* Middle: availability + email */}
+            {/* Email and Status */}
             {isOpen && (
               <motion.div
-                className="flex flex-col gap-4"
+                className="flex flex-col gap-5"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.38, duration: 0.6, ease: EXPO }}
@@ -497,34 +509,24 @@ export default function Navbar() {
                     animate={{ scale: [1, 1.55, 1], opacity: [1, 0.45, 1] }}
                     transition={{ duration: 2.2, repeat: Infinity, ease: 'easeInOut' }}
                   />
-                  <span className="font-bold uppercase" style={{ fontSize: '9px', letterSpacing: '0.18em', color: 'rgba(0,0,0,0.5)', fontFamily: "'DM Sans',sans-serif" }}>
-                    Available for projects
+                  <span className="font-bold uppercase" style={{ fontSize: '9px', letterSpacing: '0.18em', color: PINK, fontFamily: "'DM Sans',sans-serif" }}>
+                    Available
                   </span>
                 </div>
 
                 {/* Email */}
                 <div className="flex flex-col gap-1">
-                  <span className="font-bold uppercase" style={{ fontSize: '9px', letterSpacing: '0.2em', color: 'rgba(0,0,0,0.25)', fontFamily: "'DM Sans',sans-serif" }}>
-                    Reach out
+                  <span className="font-bold uppercase" style={{ fontSize: '8px', letterSpacing: '0.18em', color: PINK, opacity: 0.6, fontFamily: "'DM Sans',sans-serif" }}>
+                    Email
                   </span>
                   <motion.a
                     href="mailto:manishkumar925657@gmail.com"
-                    style={{ fontSize: '11px', color: 'rgba(0,0,0,0.45)', letterSpacing: '0.03em', wordBreak: 'break-all', fontFamily: "'DM Sans',sans-serif" }}
-                    whileHover={{ color: PINK_DARK }}
+                    style={{ fontSize: '10px', color: PINK, letterSpacing: '0.02em', wordBreak: 'break-all', fontFamily: "'DM Sans',sans-serif" }}
+                    whileHover={{ opacity: 0.7 }}
                     transition={{ duration: 0.2 }}
                   >
-                    manishkumar925657@gmail.com
+                    manishkumar<br />925657@<br />gmail.com
                   </motion.a>
-                </div>
-
-                {/* Clock */}
-                <div className="flex flex-col gap-1">
-                  <span className="font-bold uppercase" style={{ fontSize: '9px', letterSpacing: '0.2em', color: 'rgba(0,0,0,0.25)', fontFamily: "'DM Sans',sans-serif" }}>
-                    Local time
-                  </span>
-                  <span className="font-mono tabular-nums" style={{ fontSize: '13px', color: 'rgba(0,0,0,0.35)', letterSpacing: '0.08em' }}>
-                    {time} <span style={{ fontSize: '9px', opacity: 0.5 }}>IST</span>
-                  </span>
                 </div>
               </motion.div>
             )}
@@ -532,10 +534,10 @@ export default function Navbar() {
             {/* Bottom: socials */}
             {isOpen && (
               <div className="flex flex-col gap-3">
-                <span className="font-bold uppercase" style={{ fontSize: '9px', letterSpacing: '0.2em', color: 'rgba(0,0,0,0.25)', fontFamily: "'DM Sans',sans-serif" }}>
-                  Socials
+                <span className="font-bold uppercase" style={{ fontSize: '8px', letterSpacing: '0.15em', color: PINK, opacity: 0.6, fontFamily: "'DM Sans',sans-serif" }}>
+                  Follow
                 </span>
-                <div className="flex flex-col gap-[10px]">
+                <div className="flex flex-col gap-2">
                   <SocialLink label="Instagram" href="#" delay={0.42} />
                   <SocialLink label="LinkedIn"  href="#" delay={0.46} />
                   <SocialLink label="Behance"   href="#" delay={0.50} />
@@ -557,15 +559,29 @@ export default function Navbar() {
                 <SocialLink label="LinkedIn"  href="#" delay={0.44} />
                 <SocialLink label="Behance"   href="#" delay={0.48} />
               </div>
-              <motion.span
-                className="font-mono tabular-nums"
-                style={{ fontSize: '10px', color: 'rgba(0,0,0,0.3)', letterSpacing: '0.1em' }}
+              <motion.button
+                onClick={() => {
+                  navigate('/tetris')
+                  setIsOpen(false)
+                }}
+                className="px-4 py-2 rounded-sm font-bold uppercase transition-all duration-300"
+                style={{
+                  fontSize: '9px',
+                  letterSpacing: '0.12em',
+                  color: '#ffffff',
+                  backgroundColor: PINK,
+                  border: `1px solid ${PINK}`,
+                }}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ delay: 0.5, duration: 0.4 }}
+                transition={{ delay: 0.4, duration: 0.4 }}
+                whileHover={{
+                  backgroundColor: '#ffffff',
+                  color: PINK,
+                }}
               >
-                {time}
-              </motion.span>
+                Play Tetris
+              </motion.button>
             </>
           )}
         </div>

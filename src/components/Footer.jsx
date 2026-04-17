@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 import contactfSvg from "../assets/contactf.svg";
 
 /* ─── Wavy scalloped badge ──────────────────────────────────────────────────── */
@@ -80,18 +81,18 @@ const MarqueeStrip = () => {
   const [hovered, setHovered] = useState(false);
   return (
     <div
-      className="overflow-hidden  border-b border-gray-200 bg-gradient-to-r from-purple-950 via-purple-900 to-purple-950"
+      className="overflow-hidden border-b border-gray-200 bg-gradient-to-r from-purple-950 via-purple-900 to-purple-950"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
       <motion.div
-        className="flex items-center whitespace-nowrap will-change-transform gap-12 px-12"
+        className="flex items-center whitespace-nowrap will-change-transform gap-4 md:gap-12 px-4 md:px-12 py-4 md:py-0"
         animate={{ x: ["0%", "-50%"] }}
         transition={{ duration: hovered ? 40 : 20, repeat: Infinity, ease: "linear" }}
       >
         {/* Repeating marquee items */}
         {[0, 1,2,3].map((key) => (
-          <div key={key} className="flex items-center gap-12 flex-shrink-0">
+          <div key={key} className="flex items-center gap-2 md:gap-12 flex-shrink-0">
             {/* Left badge */}
            
             
@@ -222,20 +223,22 @@ const Sparkle = ({ style: s = {} }) => (
 );
 
 /* ─── FOOTER ─────────────────────────────────────────────────────────────────── */
-const Footer = () => (
+const Footer = () => {
+  const navigate = useNavigate();
+  return (
   <>
     <style>{`@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital@1&family=DM+Sans:wght@400;500&display=swap');`}</style>
 
-    <footer className="bg-gradient-to-r pt-10 from-purple-950 via-purple-900 to-purple-950">
+    <footer id="contact" className="bg-gradient-to-r pt-10 from-purple-950 via-purple-900 to-purple-950">
 
       {/* ── MARQUEE ── */}
       <MarqueeStrip />
 
       {/* ── MIDDLE ROW ── */}
-      <div className="flex flex-wrap items-center justify-between gap-8 py-8  px-5 md:px-[clamp(20px,5vw,60px)] ">
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 md:gap-8 py-6 md:py-8 px-4 md:px-[clamp(20px,5vw,60px)]">
         {/* Socials */}
-        <div className="flex gap-[clamp(24px,5vw,60px)]">
-          <div className="flex flex-col gap-4">
+        <div className="flex gap-6 md:gap-[clamp(24px,5vw,60px)]">
+          <div className="flex flex-col gap-3 md:gap-4">
             <SocialLink num={1} label="Instagram" delay={0.1} />
             <SocialLink num={2} label="Linked In" delay={0.15} />
             <SocialLink num={3} label="Behance" delay={0.2} />
@@ -248,7 +251,7 @@ const Footer = () => (
         </div>
 
         {/* CTAs */}
-        <div className="flex flex-wrap items-center gap-3">
+        <div className="flex flex-wrap items-center gap-2 md:gap-3">
           <FillButton href="mailto:hello@manishkumar.com">Send a project inquiry</FillButton>
           <FillButton href="#" arrow>Scroll back to top</FillButton>
           <ScrollTopBtn />
@@ -256,9 +259,9 @@ const Footer = () => (
       </div>
 
       {/* ── BOTTOM BAR ── */}
-      <div className="flex flex-wrap items-center justify-between gap-6 py-8 px-5 md:px-[clamp(20px,5vw,60px)]">
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 md:gap-6 py-6 md:py-8 px-4 md:px-[clamp(20px,5vw,60px)] text-xs md:text-sm">
         {/* Left */}
-        <p className="text-[0.75rem] uppercase tracking-widest text-gray-400 leading-relaxed m-0" style={{ fontFamily: "'DM Sans',sans-serif" }}>
+        <p className="text-[0.65rem] md:text-[0.75rem] uppercase tracking-widest text-gray-400 leading-relaxed m-0" style={{ fontFamily: "'DM Sans',sans-serif" }}>
           © 2025 Manish Kumar, All Rights Reserved<br />
           <motion.a href="#" className="text-gray-400 underline hover:text-amber-400" style={{ textUnderlineOffset: 3 }} whileHover={{ color: "#fbbf24" }}>Old Folio</motion.a>
         </p>
@@ -283,12 +286,20 @@ const Footer = () => (
         {/* Right */}
         <p className="text-[0.75rem] uppercase tracking-widest text-gray-400 leading-relaxed m-0 text-right" style={{ fontFamily: "'DM Sans',sans-serif" }}>
           Purely Hand–Coded, With Love &amp; Passion<br />
-          <motion.a href="#" className="text-gray-400 underline hover:text-amber-400" style={{ textUnderlineOffset: 3 }} whileHover={{ color: "#fbbf24" }}>Play Tetris</motion.a>
+          <motion.button 
+            onClick={() => navigate('/tetris')}
+            className="text-gray-400 underline hover:text-amber-400 bg-none border-none cursor-pointer p-0" 
+            style={{ textUnderlineOffset: 3, fontFamily: "'DM Sans',sans-serif", fontSize: "inherit" }} 
+            whileHover={{ color: "#fbbf24" }}
+          >
+            Play Tetris
+          </motion.button>
         </p>
       </div>
 
     </footer>
   </>
-);
+  );
+};
 
 export default Footer;

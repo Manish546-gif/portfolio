@@ -15,6 +15,7 @@ import img7 from "../assets/img7.jpg";
 import img8 from "../assets/img8.jpg";
 import img9 from "../assets/img9.jpg";
 import { motion, useMotionValue, useSpring, AnimatePresence } from "framer-motion";
+import GridDistortion from "../components/GridDistortion";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -172,10 +173,33 @@ const BulletParagraph = ({ children, delay = 0 }) => (
     className="leading-relaxed group flex items-start gap-3"
     style={{ fontFamily: 'PPEditorialNew', letterSpacing: '0.08em' }}
   >
-    <span className="inline-block mt-2 h-2 w-4 flex-shrink-0 bg-black transition-all duration-300 group-hover:w-6 group-hover:bg-orange-500" />
+    <span className="inline-block mt-2 h-2 w-4 flex-shrink-0 bg-[#1A0A14] transition-all duration-300 group-hover:w-6 group-hover:bg-orange-500" />
     <span>{children}</span>
   </motion.p>
 );
+
+// ─── Image with View button on hover ───────────────────────────────────────────
+const ImageWithViewButton = ({ imageSrc, projectUrl, className = "" }) => {
+  return (
+    <button
+      onClick={() => {
+        if (projectUrl) window.open(projectUrl, "_blank");
+      }}
+      className={`relative overflow-hidden group cursor-pointer bg-none border-none p-0 w-full h-full ${className}`}
+      style={{ pointerEvents: "auto" }}
+      aria-label="View project"
+    >
+      <GridDistortion
+        imageSrc={imageSrc}
+        grid={70}
+        mouse={0.08}
+        strength={0.12}
+        relaxation={0.9}
+        className="h-full w-full object-cover"
+      />
+    </button>
+  );
+};
 
 // ─── Rotating indicator circle ────────────────────────────────────────────────
 const RotatingIndicator = ({ src, isHovering, onEnter, onLeave }) => (
@@ -198,13 +222,13 @@ const RotatingIndicator = ({ src, isHovering, onEnter, onLeave }) => (
 );
 
 // ─── Project card for mobile view ─────────────────────────────────────────────
-const MobileProjectCard = ({ indicator, title, desc1, desc2, images, overlayWord, overlayScript }) => (
+const MobileProjectCard = ({ indicator, title, desc1, desc2, images, projectUrls = [], overlayWord, overlayScript }) => (
   <div className="mb-16 px-4">
     {/* Overlay heading on mobile */}
     <div className="relative mb-6 overflow-hidden">
       <h2
         style={{ fontFamily: "Compacta" }}
-        className="text-[4.5rem] leading-none text-black font-extrabold"
+        className="text-[4.5rem] leading-none text-[#1A0A14] font-extrabold"
       >
         <AnimatedLetters text={overlayWord} delay={0} staggerDelay={0.06} rotateFrom={90} />
       </h2>
@@ -220,7 +244,11 @@ const MobileProjectCard = ({ indicator, title, desc1, desc2, images, overlayWord
     <div className="flex gap-3 mb-6">
       {images.map((src, i) => (
         <div key={i} className="flex-1 aspect-[3/4] overflow-hidden rounded-sm">
-          <HoverImg src={src} alt="" className="h-full w-full object-cover" />
+          <ImageWithViewButton
+            imageSrc={src}
+            projectUrl={projectUrls[i] || projectUrls[0] || "#"}
+            className="h-full w-full"
+          />
         </div>
       ))}
     </div>
@@ -245,13 +273,13 @@ const MobileProjectCard = ({ indicator, title, desc1, desc2, images, overlayWord
         whileInView={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.5 }}
         viewport={{ once: true }}
-        className="text-2xl font-serif text-black"
+        className="text-2xl font-serif text-[#1A0A14]"
       >
         {title}
       </motion.h3>
     </div>
 
-    <div className="space-y-3 text-sm text-black">
+    <div className="space-y-3 text-sm text-[#1A0A14]">
       <BulletParagraph delay={0.1}>{desc1}</BulletParagraph>
       <BulletParagraph delay={0.25}>{desc2}</BulletParagraph>
     </div>
@@ -310,19 +338,19 @@ const Work = ({ isReady = true }) => {
   // ── MOBILE LAYOUT ──────────────────────────────────────────────────────────
   if (isMobile) {
     return (
-      <section id="work" className="bg-white border-b border-black">
+      <section id="work" className="bg-white border-b border-[#1A0A14]">
         {/* Mobile hero heading */}
         <div className="px-4 pt-12 pb-8">
           <div className="overflow-hidden perspective-[600px]">
             <h1
               style={{ fontFamily: "Compacta" }}
-              className="text-[5.5rem] leading-none text-black font-extrabold"
+              className="text-[5.5rem] leading-none text-[#1A0A14] font-extrabold"
             >
               <AnimatedLetters text="Featured" delay={0} staggerDelay={0.055} rotateFrom={90} />
             </h1>
             <h1
               style={{ fontFamily: "Compacta" }}
-              className="text-[5.5rem] leading-none text-black font-extrabold ml-10"
+              className="text-[5.5rem] leading-none text-[#1A0A14] font-extrabold ml-10"
             >
               <AnimatedLetters text="Work" delay={0.5} staggerDelay={0.07} rotateFrom={90} />
             </h1>
@@ -345,6 +373,7 @@ const Work = ({ isReady = true }) => {
           overlayWord="INTERFACE"
           overlayScript="Craft"
           images={[img1, img2, img3]}
+          projectUrls={["https://1earthproperties.com", "https://1earthproperties.com"]}
           desc1="1Earth Properties is designed as a modern real estate platform that brings clarity and elegance to property discovery. The experience is crafted to feel intuitive."
           desc2="Every interaction is thoughtfully refined to create a seamless journey, combining smooth transitions and structured design to deliver a polished browsing experience."
         />
@@ -356,6 +385,7 @@ const Work = ({ isReady = true }) => {
           overlayWord="INTERACTIVE"
           overlayScript="Design"
           images={[img4, img5]}
+          projectUrls={["https://auremont.com", "https://auremont.com"]}
           desc1="Auremont is shaped as a narrative-driven real estate platform, where each project is presented as a story rather than just a listing."
           desc2="The experience focuses on highlighting the vision behind each property, blending storytelling with structured presentation to create a refined journey."
         />
@@ -364,14 +394,35 @@ const Work = ({ isReady = true }) => {
         <div className="px-4 mb-16">
           <div className="grid grid-cols-2 gap-3 mb-6">
             <div className="aspect-[3/4] overflow-hidden">
-              <HoverImg src={img6} alt="" className="h-full w-full object-cover" />
+              <GridDistortion
+                imageSrc={img6}
+                grid={70}
+                mouse={0.08}
+                strength={0.12}
+                relaxation={0.9}
+                className="h-full w-full object-cover"
+              />
             </div>
             <div className="flex flex-col gap-3">
               <div className="flex-1 overflow-hidden">
-                <HoverImg src={img7} alt="" className="h-full w-full object-cover" />
+                <GridDistortion
+                  imageSrc={img7}
+                  grid={70}
+                  mouse={0.08}
+                  strength={0.12}
+                  relaxation={0.9}
+                  className="h-full w-full object-cover"
+                />
               </div>
               <div className="flex-1 overflow-hidden">
-                <HoverImg src={img9} alt="" className="h-full w-full object-cover" />
+                <GridDistortion
+                  imageSrc={img9}
+                  grid={70}
+                  mouse={0.08}
+                  strength={0.12}
+                  relaxation={0.9}
+                  className="h-full w-full object-cover"
+                />
               </div>
             </div>
           </div>
@@ -391,7 +442,7 @@ const Work = ({ isReady = true }) => {
               whileInView={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.5 }}
               viewport={{ once: true }}
-              className="text-2xl font-serif text-black"
+              className="text-2xl font-serif text-[#1A0A14]"
             >
               Auremont
             </motion.h3>
@@ -414,28 +465,28 @@ const Work = ({ isReady = true }) => {
     <section
       ref={sectionRef}
       id="work"
-      className="relative h-screen border-b-1 border-b-black overflow-hidden bg-white"
+      className="relative h-screen border-b-1 border-b-[#1A0A14] overflow-hidden bg-white"
     >
       <div
         ref={trackRef}
         className="relative flex h-full"
-        style={{ width: `${PANEL_COUNT * 110}vw` }}
+        style={{ width: `${PANEL_COUNT * 100}vw` }}
       >
         <article
           className="relative h-screen shrink-0 bg-white pl-10 flex items-center justify-between"
-          style={{ width: "440vw" }}
+          style={{ width: "400vw" }}
         >
           <div className="bg-gray-500 z-10 opacity-70 ml-140 h-px w-full absolute" />
 
           <div className="flex justify-between gap-30 pl-10 items-center">
 
             {/* ── PANEL 1: "Featured Work" heading ── */}
-            <div className="leading-50 ">
+            <div className="leading-50 w-lg">
               {/* Perspective wrapper for 3D letter rotation */}
               <div style={{ perspective: "800px" }}>
                 <h1
                   style={{ fontFamily: "Compacta" }}
-                  className="text-[11rem] text-black font-extrabold"
+                  className="text-[11rem] text-[#1A0A14] font-extrabold"
                 >
                   <AnimatedLetters
                     text="Featured"
@@ -446,7 +497,7 @@ const Work = ({ isReady = true }) => {
                 </h1>
                 <h1
                   style={{ fontFamily: "Compacta" }}
-                  className="text-[11rem] text-black font-extrabold ml-45"
+                  className="text-[11rem] text-[#1A0A14] font-extrabold ml-35"
                 >
                   <AnimatedLetters
                     text="Work"
@@ -459,7 +510,7 @@ const Work = ({ isReady = true }) => {
             </div>
 
             {/* ── Project 1 text block ── */}
-            <div className="flex-1 min-w-md mt-75 z-12 text-black">
+            <div className="flex-1 min-w-md mt-75 z-12 text-[#1A0A14]">
               <RotatingIndicator
                 src={fl}
                 isHovering={isHovering}
@@ -493,7 +544,11 @@ const Work = ({ isReady = true }) => {
             <div className="h-160 flex items-center w-4xl z-20">
               <div>
                 <div className="h-140 w-lg overflow-hidden">
-                  <HoverImg className="h-full w-full object-cover" src={img1} alt="" />
+                  <ImageWithViewButton
+                    imageSrc={img1}
+                    projectUrl="https://1earthproperties.com"
+                    className="h-full w-full"
+                  />
                 </div>
                 <div className="overflow-hidden">
                   <motion.h2
@@ -510,16 +565,24 @@ const Work = ({ isReady = true }) => {
               </div>
               <div className="w-full h-full pl-10 pt-17">
                 <div className="w-full h-1/2">
-                  <div className="w-full h-[85%] overflow-hidden">
-                    <HoverImg src={img2} className="h-full w-full object-cover" alt="" />
+                  <div className="w-80 h-[85%] overflow-hidden">
+                    <ImageWithViewButton
+                      imageSrc={img2}
+                      projectUrl="https://1earthproperties.com"
+                      className="h-full w-full"
+                    />
                   </div>
                   <div className="pt-2">
                     <h2 className="text-md text-gray-700">Parallel states drifting without direction</h2>
                   </div>
                 </div>
                 <div className="w-full h-1/2">
-                  <div className="w-full h-[85%] overflow-hidden">
-                    <HoverImg src={img3} className="h-full w-full scale-120 object-cover" alt="" />
+                  <div className="w-80 h-[85%] overflow-hidden">
+                    <ImageWithViewButton
+                      imageSrc={img3}
+                      projectUrl="https://1earthproperties.com"
+                      className="h-full w-full scale-120"
+                    />
                   </div>
                   <div className="pt-2">
                     <h2 className="text-md text-gray-700">Something almost real</h2>
@@ -534,7 +597,7 @@ const Work = ({ isReady = true }) => {
                 {/* Bottom layer first */}
                 <h1
                   style={{ fontFamily: "Compacta" }}
-                  className="text-black font-extrabold text-[15rem]"
+                  className="text-[#1A0A14] font-extrabold text-[15rem]"
                 >
                   <AnimatedLetters
                     text="INTERFACE"
@@ -546,7 +609,7 @@ const Work = ({ isReady = true }) => {
                 {/* Top layer second */}
                 <h1
                   style={{ fontFamily: "FleurDeLeah" }}
-                  className="text-pink-600 absolute z-10 text-[10rem] ml-40"
+                  className="text-[#d4607a] absolute z-10 text-[10rem] ml-40"
                 >
                   <AnimatedLetters
                     text="Craft"
@@ -557,7 +620,7 @@ const Work = ({ isReady = true }) => {
                 </h1>
               </div>
               <div className="h-4/7 flex pt-5 justify-end w-full">
-                <div className="flex-1 max-w-md z-12 text-black">
+                <div className="flex-1 max-w-md z-12 text-[#1A0A14]">
                   <RotatingIndicator
                     src={fl1}
                     isHovering={isHovering}
@@ -593,18 +656,26 @@ const Work = ({ isReady = true }) => {
             <div className="gap-10 flex h-160 z-20 w-5xl">
               <div className="h-full w-1/2">
                 <div className="h-[85%] w-full overflow-hidden">
-                  <HoverImg className="h-full w-full object-cover" src={img4} alt="" />
+                  <ImageWithViewButton
+                    imageSrc={img4}
+                    projectUrl="https://auremont.com"
+                    className="h-full w-full"
+                  />
                 </div>
                 <div className="pt-4">
-                  <h2 className="text-black">manish</h2>
+                  <h2 className="text-[#1A0A14]">manish</h2>
                 </div>
               </div>
               <div className="h-full w-1/2 pt-17">
                 <div className="h-[90%] w-full overflow-hidden">
-                  <HoverImg className="h-full w-full object-cover" src={img5} alt="" />
+                  <ImageWithViewButton
+                    imageSrc={img5}
+                    projectUrl="https://auremont.com"
+                    className="h-full w-full"
+                  />
                 </div>
                 <div className="pt-4">
-                  <h2 className="text-black">manish</h2>
+                  <h2 className="text-[#1A0A14]">manish</h2>
                 </div>
               </div>
             </div>
@@ -615,7 +686,7 @@ const Work = ({ isReady = true }) => {
                 {/* Bottom layer first */}
                 <h1
                   style={{ fontFamily: "Compacta" }}
-                  className="text-black font-extrabold text-[15rem]"
+                  className="text-[#1A0A14] font-extrabold text-[15rem]"
                 >
                   <AnimatedLetters
                     text="INTERACTIVE"
@@ -627,7 +698,7 @@ const Work = ({ isReady = true }) => {
                 {/* Top layer second */}
                 <h1
                   style={{ fontFamily: "FleurDeLeah" }}
-                  className="text-pink-600 absolute z-10 text-[10rem] ml-40"
+                  className="text-[#d4607a] absolute z-10 text-[10rem] ml-40"
                 >
                   <AnimatedLetters
                     text="Design"
@@ -638,7 +709,7 @@ const Work = ({ isReady = true }) => {
                 </h1>
               </div>
               <div className="h-4/7 flex pt-5 justify-end w-full">
-                <div className="flex-1 max-w-md z-12 text-black">
+                <div className="flex-1 max-w-md z-12 text-[#1A0A14]">
                   <RotatingIndicator
                     src={fl2}
                     isHovering={isHovering}
@@ -675,19 +746,31 @@ const Work = ({ isReady = true }) => {
               <div className="h-full w-4/7">
                 <div className="h-105 w-full">
                   <div className="h-[87%] w-full overflow-hidden">
-                    <HoverImg className="h-full w-full object-cover" src={img6} alt="" />
+                    <ImageWithViewButton
+                      imageSrc={img6}
+                      projectUrl="https://example3.com"
+                      className="h-full w-full"
+                    />
                   </div>
                   <div className="w-full pt-3">manish</div>
                 </div>
                 <div className="w-full h-65">
                   <div className="h-[87%] w-5/8 ml-54 overflow-hidden">
-                    <HoverImg src={img9} className="h-full w-full object-cover" alt="" />
+                    <ImageWithViewButton
+                      imageSrc={img9}
+                      projectUrl="https://example3.com"
+                      className="h-full w-full"
+                    />
                   </div>
                 </div>
               </div>
               <div className="h-full w-2/6 pt-60 ml-5">
                 <div className="h-60 w-full overflow-hidden">
-                  <HoverImg src={img7} className="h-full w-full object-cover" alt="" />
+                  <ImageWithViewButton
+                    imageSrc={img7}
+                    projectUrl="https://example3.com"
+                    className="h-full w-full"
+                  />
                 </div>
               </div>
             </div>

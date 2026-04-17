@@ -95,9 +95,9 @@ const ShuffleLetters = ({
 
 const Home = () => {
   return (
-    <div className='w-full'>
+    <div id='home' className='w-full'>
       {/* Hero Section with Grid Distortion */}
-      <div style={{ width: '100%', height: '100vh', position: 'relative',overflow:'hidden' }}>
+      <div style={{ width: '100%', minHeight: 'min(100vh, 600px)', height: '100vh', position: 'relative', overflow: 'hidden' }} className='max-sm:h-screen'>
         <GridDistortion
           imageSrc={bg23}
           grid={70}
@@ -111,14 +111,14 @@ const Home = () => {
        
 
         {/* Hero Text Overlay */}
-        <div className='absolute inset-0 flex flex-col justify-between z-10 p-12 md:p-16 pointer-events-none'>
+        <div className='absolute inset-0 flex flex-col justify-between z-10 p-6 md:p-12 lg:p-16 pointer-events-none'>
           {/* Top Stats */}
          
           {/* Main Content - Centered */}
           <div className='flex-1 flex items-center'>
             <div className='w-full'>
               {/* Left circular element */}
-              <div className='flex items-start gap-16'>
+              <div className='flex items-start gap-8 md:gap-16'>
                 
                 
                 {/* Main heading */}
@@ -128,13 +128,13 @@ const Home = () => {
                   transition={{ duration: 0.8, delay: 0.1, ease: EXPO }}
                   viewport={{ once: true }}
                 >
-                  <h1 style={{ fontFamily: 'Compacta', letterSpacing: '0.001em' }} className='text-white text-7xl md:text-[10vw] lg:text-[12vw] font-black leading-none mb-2'>
+                  <h1 style={{ fontFamily: 'Compacta', letterSpacing: '0.001em' }} className='text-white text-4xl sm:text-5xl md:text-7xl lg:text-[10vw] xl:text-[12vw] font-[#1A0A14] leading-none mb-2'>
                     <span>
                       <AnimatedLetters text="I BUILD MODERN " delay={0} staggerDelay={0.04} rotateFrom={90} />
                     </span>
                     <br />
                     
-                    <span className='text-black ml-140'>
+                    <span className='text-[#1A0A14] ml-0 md:ml-140'>
                       <AnimatedLetters text="WEBSITES" delay={0.4} staggerDelay={0.04} rotateFrom={90} />
                     </span>
                     <br />
@@ -153,20 +153,20 @@ const Home = () => {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 1, ease: EXPO }}
             viewport={{ once: true }}
-            className='flex items-end justify-between'
+            className='flex flex-col md:flex-row items-end justify-between gap-4 md:gap-0'
           >
             <div>
-              <h3 style={{ fontFamily: 'PPEditorialNew', letterSpacing: '0.1em' }} className='text-white text-sm uppercase tracking-widest mb-4'>
+              <h3 style={{ fontFamily: 'PPEditorialNew', letterSpacing: '0.1em' }} className='text-white text-xs md:text-sm uppercase tracking-widest mb-4'>
                 About
               </h3>
-              <p style={{ fontFamily: 'PPEditorialNew', letterSpacing: '0.02em' }} className='text-white/70 text-sm max-w-md leading-relaxed'>
+              <p style={{ fontFamily: 'PPEditorialNew', letterSpacing: '0.02em' }} className='text-white/70 text-xs md:text-sm max-w-xs md:max-w-md leading-relaxed'>
                 I'm a web developer focused on building modern, fast, and reliable websites. I care not only about how a site looks, but also about how it performs, scales, and feels. I make sure every project is built with attention to detail and long-term quality in mind.
               </p>
               <motion.a
                 whileHover={{ x: 5 }}
                 href="#"
                 style={{ fontFamily: 'PPEditorialNew', letterSpacing: '0.08em' }}
-                className='text-green-400 text-sm tracking-widest inline-block mt-6 hover:text-green-300 transition-colors pointer-events-auto'
+                className='text-green-400 text-xs md:text-sm tracking-widest inline-block mt-6 hover:text-green-300 transition-colors pointer-events-auto'
               >
                 Learn more ↗
               </motion.a>

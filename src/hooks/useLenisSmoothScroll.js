@@ -20,12 +20,12 @@ const useLenisSmoothScroll = (enabled = true) => {
     }
 
     const lenis = new Lenis({
-      duration: 1.35,
+      duration: 1.8,
       easing: defaultEasing,
       smoothWheel: true,
       syncTouch: true,
-      touchMultiplier: 1.1,
-      wheelMultiplier: 0.75,
+      touchMultiplier: 1.0,
+      wheelMultiplier: 0.6,
       autoRaf: false,
     })
 
@@ -39,7 +39,9 @@ const useLenisSmoothScroll = (enabled = true) => {
       lenis.raf(time * 1000)
     }
 
+    // Simple performance stabilization
     gsap.ticker.lagSmoothing(0)
+    gsap.config({ force3D: true })
     gsap.ticker.add(update)
 
     const handleRefresh = () => {

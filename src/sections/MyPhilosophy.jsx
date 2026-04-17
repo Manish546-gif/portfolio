@@ -291,6 +291,39 @@ export default function MyPhilosophy() {
       }
 
       /* ── scrolling badge ── */
+
+      /* ── Mobile responsive ── */
+      @media (max-width: 768px) {
+        .phv3-pillar {
+          gap: 12px;
+          padding: 16px 0;
+        }
+        .phv3-pillar-title {
+          font-size: 14px;
+        }
+        .phv3-pillar-desc {
+          font-size: 12px;
+        }
+        .phv3-stat-val {
+          font-size: 28px;
+        }
+        .phv3-step {
+          gap: 10px;
+        }
+        .phv3-step-title {
+          font-size: 12px;
+        }
+        .phv3-step-desc {
+          font-size: 11px;
+        }
+        .phv3-label {
+          margin-bottom: 16px;
+          font-size: 9px;
+        }
+        .phv3-line {
+          margin-bottom: 24px !important;
+        }
+      }
     `;
     document.head.appendChild(s);
     return () => { document.getElementById("philosophy-anim-styles-v3")?.remove(); };
@@ -339,10 +372,11 @@ export default function MyPhilosophy() {
   return (
     <>
       <section
+        id="philosophy"
         ref={sectionRef}
         className={`phil-root-v3${entered ? " phv3-entered" : ""}`}
         style={{
-          backgroundColor: "#FAFAF8",
+          backgroundColor: "#FFFFFF",
           backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23n)' opacity='0.042'/%3E%3C/svg%3E")`,
           minHeight: "100vh",
           width: "100%",
@@ -352,25 +386,41 @@ export default function MyPhilosophy() {
       >
         <div className="phv3-noise" />
 
-        {/* ── decorative vertical rule ── */}
+        {/* ── decorative vertical rule (hidden on mobile) ── */}
         <div style={{
           position: "absolute", left: "53%", top: 0, bottom: 0, width: "1px",
           background: "linear-gradient(to bottom, transparent 0%, rgba(26,10,20,0.08) 20%, rgba(26,10,20,0.08) 80%, transparent 100%)",
           zIndex: 2, pointerEvents: "none",
+          display: window.innerWidth < 768 ? "none" : "block"
         }} />
 
-        {/* ── main two-column body ── */}
-        <div style={{ display: "flex", width: "100%", position: "relative", zIndex: 2 }}>
+        {/* ── main two-column body (stacks on mobile) ── */}
+        <div style={{ 
+          display: "flex", 
+          flexDirection: window.innerWidth < 768 ? "column" : "row",
+          width: "100%", 
+          position: "relative", 
+          zIndex: 2 
+        }}>
 
           {/* ══ LEFT COLUMN ══ */}
-          <div style={{ width: "53%", paddingLeft: 64, paddingRight: 56, paddingTop: 56, paddingBottom: 64, display: "flex", flexDirection: "column", gap: 0 }}>
+          <div style={{ 
+            width: window.innerWidth < 768 ? "100%" : "53%", 
+            paddingLeft: window.innerWidth < 768 ? 16 : 64, 
+            paddingRight: window.innerWidth < 768 ? 16 : 56, 
+            paddingTop: window.innerWidth < 768 ? 32 : 56, 
+            paddingBottom: window.innerWidth < 768 ? 32 : 64, 
+            display: "flex", 
+            flexDirection: "column", 
+            gap: 0 
+          }}>
 
             {/* Big heading */}
             <div style={{ lineHeight: 0.88, userSelect: "none", marginBottom: 48 }}>
               {/* MY */}
               <div style={{ position: "relative", display: "inline-block", width: "100%" }}>
                 <div style={{
-                  fontFamily: "'Bebas Neue', sans-serif",
+                  fontFamily: "Compacta",
                   color: "#1a0a14",
                   fontSize: "clamp(80px,13vw,180px)",
                   lineHeight: 0.88,
@@ -379,56 +429,22 @@ export default function MyPhilosophy() {
                 }}>
                   {splitChars("MY")}
                 </div>
-                <div
-                  className="phv3-clip"
-                  style={{
-                    fontFamily: "'Playfair Display', serif",
-                    fontStyle: "italic",
-                    fontWeight: 400,
-                    color: "#d4607a",
-                    fontSize: "clamp(28px,6.5vw,88px)",
-                    position: "absolute",
-                    top: "28%",
-                    left: "12%",
-                    transitionDelay: "0.4s",
-                    pointerEvents: "none",
-                    whiteSpace: "nowrap",
-                  }}
-                >
-                  Design
-                </div>
+              
               </div>
 
               {/* PHILOSOPHY */}
               <div style={{ position: "relative", display: "inline-block", width: "100%", marginTop: "-0.04em" }}>
                 <div style={{
-                  fontFamily: "'Bebas Neue', sans-serif",
+                  fontFamily: "Compacta",
                   color: "#1a0a14",
-                  fontSize: "clamp(44px,8.5vw,120px)",
+                  fontSize: "clamp(44px,11.5vw,180px)",
                   lineHeight: 0.9,
                   fontWeight: 400,
                   letterSpacing: "0.03em",
                 }}>
                   {splitChars("PHILOSOPHY")}
                 </div>
-                <div
-                  className="phv3-clip"
-                  style={{
-                    fontFamily: "'Playfair Display', serif",
-                    fontStyle: "italic",
-                    fontWeight: 400,
-                    color: "#d4607a",
-                    fontSize: "clamp(24px,5.5vw,72px)",
-                    position: "absolute",
-                    top: "22%",
-                    left: "6%",
-                    transitionDelay: "0.55s",
-                    pointerEvents: "none",
-                    whiteSpace: "nowrap",
-                  }}
-                >
-                  & Essence
-                </div>
+               
               </div>
             </div>
 
@@ -459,36 +475,20 @@ export default function MyPhilosophy() {
 
 
             {/* ── svg signature flourish ── */}
-            <div style={{ marginTop: 48 }}>
-              <svg
-                viewBox="0 0 300 60"
-                width="220"
-                height="44"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  className="phv3-sig-path"
-                  d="M10 40 C40 10, 60 50, 90 30 C120 10, 130 45, 160 32 C190 18, 200 48, 230 36 C255 25, 265 42, 290 38"
-                  stroke="#d4607a"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  fill="none"
-                />
-                <path
-                  className="phv3-sig-path"
-                  d="M10 46 C50 46, 80 46, 120 46"
-                  stroke="rgba(26,10,20,0.18)"
-                  strokeWidth="1"
-                  strokeLinecap="round"
-                  fill="none"
-                />
-              </svg>
-            </div>
+           
           </div>
 
           {/* ══ RIGHT COLUMN ══ */}
-          <div style={{ width: "47%", paddingLeft: 56, paddingRight: 64, paddingTop: 56, paddingBottom: 64, display: "flex", flexDirection: "column", gap: 0 }}>
+          <div style={{ 
+            width: window.innerWidth < 768 ? "100%" : "47%", 
+            paddingLeft: window.innerWidth < 768 ? 16 : 56, 
+            paddingRight: window.innerWidth < 768 ? 16 : 64, 
+            paddingTop: window.innerWidth < 768 ? 32 : 56, 
+            paddingBottom: window.innerWidth < 768 ? 32 : 64, 
+            display: "flex", 
+            flexDirection: "column", 
+            gap: 0 
+          }}>
 
             {/* ── core belief quote ── */}
             <div style={{ marginBottom: 56 }}>
@@ -514,7 +514,7 @@ export default function MyPhilosophy() {
                   fontWeight: 400,
                   color: "#1a0a14",
                   lineHeight: 1.55,
-                  fontSize: "clamp(15px,1.8vw,22px)",
+                  fontSize: "clamp(15px,1.8vw,52px)",
                   maxWidth: 420,
                 }}
               >
@@ -563,9 +563,14 @@ export default function MyPhilosophy() {
         {/* ── bottom accent bar ── */}
         <div style={{
           borderTop: "1px solid rgba(26,10,20,0.08)",
-          display: "flex", alignItems: "center", justifyContent: "space-between",
-          padding: "14px 64px",
-          position: "relative", zIndex: 3,
+          display: "flex", 
+          flexDirection: window.innerWidth < 768 ? "column" : "row",
+          alignItems: "center", 
+          justifyContent: window.innerWidth < 768 ? "center" : "space-between",
+          padding: window.innerWidth < 768 ? "12px 16px" : "14px 64px",
+          position: "relative", 
+          zIndex: 3,
+          gap: window.innerWidth < 768 ? 8 : 0,
         }}>
           <span style={{ fontFamily: "'DM Mono',monospace", fontSize: 10, letterSpacing: "0.15em", color: "rgba(26,10,20,0.28)" }}>
             DESIGN × CRAFT × PURPOSE

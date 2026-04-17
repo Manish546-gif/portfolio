@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 
 // ── Palette ───────────────────────────────────────────────────────────────────
 const C = {
@@ -62,231 +63,20 @@ const ghostY = (board, piece) => {
 };
 const PTS = [0, 100, 300, 500, 800];
 
-// ── Audio ─────────────────────────────────────────────────────────────────────
-function makeBeatEngine(actx) {
-  const BPM = 128;
-  const bi   = 60 / BPM;          // one beat  (quarter note)
-  const si   = bi / 4;            // one step  (sixteenth note)
-  let step = 0;                   // 0-15 within a bar
-  let next = actx.currentTime + 0.05;
-  let sid = null, cb = null;
-
-  // ── helpers ──────────────────────────────────────────────────────────────────
-  const mkNoise = (dur, hpFreq = 0) => {
-    const n   = Math.ceil(actx.sampleRate * dur);
-    const buf = actx.createBuffer(1, n, actx.sampleRate);
-    const d   = buf.getChannelData(0);
-    for (let i = 0; i < n; i++) d[i] = Math.random() * 2 - 1;
-    if (hpFreq) {
-      // simple one-pole high-pass baked into the buffer
-      let prev = 0, rc = 1 / (2 * Math.PI * hpFreq / actx.sampleRate + 1);
-      for (let i = 0; i < n; i++) { prev = rc * (prev + d[i] - (i > 0 ? d[i-1] : 0)); d[i] = prev; }
-    }
-    return buf;
-  };
-
-  // ── Kick drum ────────────────────────────────────────────────────────────────
-  const kick = (t, vol = 0.9) => {
-    const o = actx.createOscillator(), g = actx.createGain();
-    o.connect(g); g.connect(actx.destination);
-    o.frequency.setValueAtTime(180, t);
-    o.frequency.exponentialRampToValueAtTime(40, t + 0.22);
-    g.gain.setValueAtTime(vol, t);
-    g.gain.exponentialRampToValueAtTime(0.001, t + 0.28);
-    o.start(t); o.stop(t + 0.28);
-    // click transient
-    const c = actx.createOscillator(), cg = actx.createGain();
-    c.connect(cg); cg.connect(actx.destination);
-    c.frequency.value = 3000;
-    cg.gain.setValueAtTime(vol * 0.4, t);
-    cg.gain.exponentialRampToValueAtTime(0.001, t + 0.015);
-    c.start(t); c.stop(t + 0.015);
-  };
-
-  // ── Sub-bass note (follows chord stab on beat 1) ─────────────────────────────
-  const sub = (t, freq = 55) => {
-    const o = actx.createOscillator(), g = actx.createGain();
-    o.type = "sine"; o.connect(g); g.connect(actx.destination);
-    o.frequency.setValueAtTime(freq, t);
-    g.gain.setValueAtTime(0.5, t);
-    g.gain.exponentialRampToValueAtTime(0.001, t + bi * 1.8);
-    o.start(t); o.stop(t + bi * 1.8);
-  };
-
-  // ── Snare ─────────────────────────────────────────────────────────────────────
-  const snare = (t, vol = 0.55) => {
-    // tonal body
-    const o = actx.createOscillator(), og = actx.createGain();
-    o.connect(og); og.connect(actx.destination);
-    o.frequency.setValueAtTime(220, t);
-    o.frequency.exponentialRampToValueAtTime(120, t + 0.1);
-    og.gain.setValueAtTime(vol * 0.6, t);
-    og.gain.exponentialRampToValueAtTime(0.001, t + 0.12);
-    o.start(t); o.stop(t + 0.12);
-    // noise crack
-    const s = actx.createBufferSource(), f = actx.createBiquadFilter(), g = actx.createGain();
-    s.buffer = mkNoise(0.15); f.type = "bandpass"; f.frequency.value = 3500; f.Q.value = 0.5;
-    s.connect(f); f.connect(g); g.connect(actx.destination);
-    g.gain.setValueAtTime(vol, t);
-    g.gain.exponentialRampToValueAtTime(0.001, t + 0.14);
-    s.start(t); s.stop(t + 0.14);
-  };
-
-  // ── Rimshot ───────────────────────────────────────────────────────────────────
-  const rimshot = (t) => {
-    const o = actx.createOscillator(), g = actx.createGain();
-    o.connect(g); g.connect(actx.destination);
-    o.type = "triangle"; o.frequency.value = 800;
-    g.gain.setValueAtTime(0.28, t);
-    g.gain.exponentialRampToValueAtTime(0.001, t + 0.04);
-    o.start(t); o.stop(t + 0.04);
-  };
-
-  // ── Clap ─────────────────────────────────────────────────────────────────────
-  const clap = (t) => {
-    [0, 0.008, 0.016].forEach(offset => {
-      const s = actx.createBufferSource(), f = actx.createBiquadFilter(), g = actx.createGain();
-      s.buffer = mkNoise(0.06); f.type = "bandpass"; f.frequency.value = 1800; f.Q.value = 0.8;
-      s.connect(f); f.connect(g); g.connect(actx.destination);
-      g.gain.setValueAtTime(0.3, t + offset);
-      g.gain.exponentialRampToValueAtTime(0.001, t + offset + 0.06);
-      s.start(t + offset); s.stop(t + offset + 0.06);
-    });
-  };
-
-  // ── Closed hi-hat ─────────────────────────────────────────────────────────────
-  const hihatC = (t, vol = 0.18) => {
-    const s = actx.createBufferSource(), f = actx.createBiquadFilter(), g = actx.createGain();
-    s.buffer = mkNoise(0.05); f.type = "highpass"; f.frequency.value = 9000;
-    s.connect(f); f.connect(g); g.connect(actx.destination);
-    g.gain.setValueAtTime(vol, t);
-    g.gain.exponentialRampToValueAtTime(0.001, t + 0.04);
-    s.start(t); s.stop(t + 0.04);
-  };
-
-  // ── Open hi-hat ──────────────────────────────────────────────────────────────
-  const hihatO = (t, vol = 0.22) => {
-    const s = actx.createBufferSource(), f = actx.createBiquadFilter(), g = actx.createGain();
-    s.buffer = mkNoise(0.35); f.type = "highpass"; f.frequency.value = 7500;
-    s.connect(f); f.connect(g); g.connect(actx.destination);
-    g.gain.setValueAtTime(vol, t);
-    g.gain.exponentialRampToValueAtTime(0.001, t + 0.3);
-    s.start(t); s.stop(t + 0.3);
-  };
-
-  // ── Shaker (8th-note texture) ─────────────────────────────────────────────────
-  const shaker = (t) => {
-    const s = actx.createBufferSource(), f = actx.createBiquadFilter(), g = actx.createGain();
-    s.buffer = mkNoise(0.025); f.type = "highpass"; f.frequency.value = 11000;
-    s.connect(f); f.connect(g); g.connect(actx.destination);
-    g.gain.setValueAtTime(0.08, t);
-    g.gain.exponentialRampToValueAtTime(0.001, t + 0.025);
-    s.start(t); s.stop(t + 0.025);
-  };
-
-  // ── Tom ───────────────────────────────────────────────────────────────────────
-  const tom = (t, freq = 120, vol = 0.4) => {
-    const o = actx.createOscillator(), g = actx.createGain();
-    o.connect(g); g.connect(actx.destination);
-    o.frequency.setValueAtTime(freq, t);
-    o.frequency.exponentialRampToValueAtTime(freq * 0.5, t + 0.18);
-    g.gain.setValueAtTime(vol, t);
-    g.gain.exponentialRampToValueAtTime(0.001, t + 0.22);
-    o.start(t); o.stop(t + 0.22);
-  };
-
-  // ── Synth chord stab ──────────────────────────────────────────────────────────
-  const stab = (t, notes = [220, 277, 330], vol = 0.12) => {
-    notes.forEach(freq => {
-      const o = actx.createOscillator(), f = actx.createBiquadFilter(), g = actx.createGain();
-      o.type = "sawtooth"; o.frequency.value = freq;
-      f.type = "lowpass"; f.frequency.setValueAtTime(2000, t);
-      f.frequency.exponentialRampToValueAtTime(400, t + 0.18);
-      o.connect(f); f.connect(g); g.connect(actx.destination);
-      g.gain.setValueAtTime(vol, t);
-      g.gain.exponentialRampToValueAtTime(0.001, t + 0.2);
-      o.start(t); o.stop(t + 0.2);
-    });
-  };
-
-  // ── 16-step sequencer patterns ────────────────────────────────────────────────
-  //   index: 0  1  2  3  4  5  6  7  8  9  10 11 12 13 14 15
-  const kickPat   = [1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0];
-  const snarePat  = [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0];
-  const clapPat   = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1]; // beat 4e
-  const rimPat    = [0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0];
-  const hihatCPat = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]; // every 16th
-  const hihatOPat = [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0]; // steps 6 & 14
-  const shakerPat = [0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1]; // 8th notes
-  const tomPat    = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0]; // fill on 15
-  const stabPat   = [1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0]; // beat 1 & 3
-  const subPat    = [1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0];
-
-  const chords = [[220,277,330], [196,247,294], [233,293,349], [175,220,262]];
-  const subFreqs = [55, 49, 58, 44];
-  let bar = 0;
-
-  const run = () => {
-    while (next < actx.currentTime + 0.3) {
-      const t = next;
-      const s = step % 16;
-      const b = Math.floor(step / 16) % 4; // bar index for chord changes
-
-      if (kickPat[s])   kick(t, s === 0 ? 0.9 : 0.7);
-      if (snarePat[s])  snare(t);
-      if (clapPat[s])   clap(t);
-      if (rimPat[s])    rimshot(t);
-      if (hihatCPat[s] && !hihatOPat[s]) hihatC(t, s % 2 === 0 ? 0.18 : 0.1);
-      if (hihatOPat[s]) hihatO(t);
-      if (shakerPat[s]) shaker(t);
-      if (tomPat[s])    tom(t, 100 + (s % 4) * 20, 0.38);
-      if (stabPat[s])   stab(t, chords[b % chords.length], 0.1);
-      if (subPat[s])    sub(t, subFreqs[b % subFreqs.length]);
-
-      if (s === 0 && cb) cb();   // fire beat callback on bar downbeat
-      if (s % 4 === 0 && cb) cb(); // also fire on every quarter note
-
-      step++;
-      if (step % 16 === 0) bar++;
-      next += si;
-    }
-    sid = setTimeout(run, 30);
-  };
-
-  return {
-    start(fn) { cb = fn; run(); },
-    stop() { clearTimeout(sid); },
-  };
-}
-
-const sfxDrop = actx => {
-  const o = actx.createOscillator(), g = actx.createGain();
-  o.connect(g); g.connect(actx.destination);
-  o.type = "sine"; o.frequency.setValueAtTime(220, actx.currentTime);
-  o.frequency.exponentialRampToValueAtTime(60, actx.currentTime + 0.1);
-  g.gain.setValueAtTime(0.15, actx.currentTime);
-  g.gain.exponentialRampToValueAtTime(0.001, actx.currentTime + 0.1);
-  o.start(); o.stop(actx.currentTime + 0.1);
-};
-
-const sfxClear = actx =>
-  [0, 80, 160, 240].forEach((d, i) => setTimeout(() => {
-    const o = actx.createOscillator(), g = actx.createGain();
-    o.connect(g); g.connect(actx.destination);
-    o.type = "sine"; o.frequency.value = 440 + i * 110;
-    g.gain.setValueAtTime(0.22, actx.currentTime);
-    g.gain.exponentialRampToValueAtTime(0.001, actx.currentTime + 0.12);
-    o.start(); o.stop(actx.currentTime + 0.12);
-  }, d));
-
 // ── Particles ─────────────────────────────────────────────────────────────────
 const mkPart = (x, y) => {
   const a = Math.random() * Math.PI * 2, s = 1.5 + Math.random() * 3;
   return { x, y, vx: Math.cos(a)*s, vy: Math.sin(a)*s - 2.5, alpha: 1, size: 2 + Math.random()*4 };
 };
+// Audio removed
+function makeBeatEngine() { return { start() {}, stop() {} }; }
+
+const sfxDrop = () => {};
+const sfxClear = () => {};
 
 // ── Component ─────────────────────────────────────────────────────────────────
 export default function RhythmTetris() {
+  const navigate = useNavigate();
   const boardRef = useRef(null);
   const nextRef  = useRef(null);
   const stRef = useRef({
@@ -302,6 +92,7 @@ export default function RhythmTetris() {
   });
   const rafId = useRef(null);
   const [ui, setUi] = useState({ score:0, lines:0, level:1, combo:0, over:false, started:false, beat:false });
+  const [soundEnabled, setSoundEnabled] = useState(true);
 
   // ── Start ────────────────────────────────────────────────────────────────────
   const start = useCallback(() => {
@@ -312,13 +103,18 @@ export default function RhythmTetris() {
     s.beatPulse = 0; s.flashTimer = 0; s.flashRows = 0;
     s.particles = []; s.dropTimer = 0; s.lastTime = performance.now();
     s.running = true; s.over = false;
-    if (!s.actx) s.actx = new (window.AudioContext || window.webkitAudioContext)();
-    else if (s.actx.state === "suspended") s.actx.resume();
-    if (s.engine) s.engine.stop();
-    s.engine = makeBeatEngine(s.actx);
-    s.engine.start(() => { s.beatPulse = 1; });
+    if (soundEnabled) {
+      if (!s.actx) s.actx = new (window.AudioContext || window.webkitAudioContext)();
+      else if (s.actx.state === "suspended") s.actx.resume();
+      if (s.engine) s.engine.stop();
+      s.engine = makeBeatEngine(s.actx);
+      s.engine.start(() => { s.beatPulse = 1; });
+    } else {
+      if (s.engine) s.engine.stop();
+      s.engine = null;
+    }
     setUi({ score:0, lines:0, level:1, combo:0, over:false, started:true, beat:false });
-  }, []);
+  }, [soundEnabled]);
 
   // ── Keys ─────────────────────────────────────────────────────────────────────
   useEffect(() => {
@@ -345,7 +141,43 @@ export default function RhythmTetris() {
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [start]);
+  }, [start, soundEnabled]);
+
+  // ── Toggle sound ────────────────────────────────────────────────────────────────
+  const toggleSound = useCallback(() => {
+    const s = stRef.current;
+    
+    // Always stop the current engine
+    if (s.engine) {
+      s.engine.stop();
+      s.engine = null;
+    }
+    
+    // Toggle state and handle audio context
+    setSoundEnabled(prev => {
+      const newState = !prev;
+      
+      // If toggling OFF, close the audio context
+      if (!newState && s.actx) {
+        if (s.actx.state !== "closed") {
+          s.actx.close();
+        }
+        s.actx = null;
+      }
+      
+      // If toggling ON and game is running, create fresh engine
+      if (newState && s.running) {
+        // Create new audio context
+        s.actx = new (window.AudioContext || window.webkitAudioContext)();
+        // Create new engine
+        s.engine = makeBeatEngine(s.actx);
+        // Start it
+        s.engine.start(() => { s.beatPulse = 1; });
+      }
+      
+      return newState;
+    });
+  }, []);
 
   // ── Draw helper — no box-shadow ───────────────────────────────────────────────
   const drawBlock = (ctx, px, py, onBeat) => {
@@ -500,7 +332,18 @@ export default function RhythmTetris() {
     };
 
     rafId.current = requestAnimationFrame(loop);
-    return () => cancelAnimationFrame(rafId.current);
+    return () => {
+      cancelAnimationFrame(rafId.current);
+      // Stop sound when leaving game
+      if (stRef.current.engine) {
+        stRef.current.engine.stop();
+        stRef.current.engine = null;
+      }
+      if (stRef.current.actx) {
+        stRef.current.actx.close();
+        stRef.current.actx = null;
+      }
+    };
   }, []);
 
   const BW = COLS * CELL, BH = ROWS * CELL;
@@ -523,6 +366,20 @@ export default function RhythmTetris() {
       display: "flex", alignItems: "center", justifyContent: "center",
       fontFamily: "'Courier New', monospace", position: "relative", userSelect: "none",
     }}>
+      {/* Back button */}
+      <button
+        onClick={() => navigate('/')}
+        style={{
+          position: "absolute", top: 20, left: 20, zIndex: 1000,
+          background: "transparent", border: `1px solid ${C.border}`,
+          color: C.text, padding: "8px 16px", fontSize: 11, letterSpacing: 2,
+          cursor: "pointer", fontFamily: "'Courier New',monospace", transition: "all 0.15s",
+        }}
+        onMouseOver={e => { e.target.style.borderColor = C.borderHot; e.target.style.color = C.blockHi; }}
+        onMouseOut={e => { e.target.style.borderColor = C.border; e.target.style.color = C.text; }}
+      >
+        ← BACK
+      </button>
 
       {/* Watermark */}
       <div style={{
@@ -623,6 +480,21 @@ export default function RhythmTetris() {
               {ui.lines % 10}/10 → Lv.{ui.level+1}
             </div>
           </div>
+
+          {/* Sound toggle button */}
+          <button
+            onClick={toggleSound}
+            style={{
+              background: "transparent", border: `1px solid ${C.border}`,
+              color: C.text, padding: "8px", fontSize: 10, letterSpacing: 2,
+              cursor: "pointer", fontFamily: "'Courier New',monospace", transition: "all 0.15s",
+              width: "100%", textAlign: "center",
+            }}
+            onMouseOver={e => e.target.style.borderColor = C.borderHot}
+            onMouseOut={e => e.target.style.borderColor = C.border}
+          >
+            {soundEnabled ? "🔊 SOUND ON" : "🔇 SOUND OFF"}
+          </button>
         </div>
       </div>
 
