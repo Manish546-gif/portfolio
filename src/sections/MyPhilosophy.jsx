@@ -292,6 +292,29 @@ export default function MyPhilosophy() {
 
       /* ── Mobile responsive ── */
       @media (max-width: 768px) {
+        .phv3-char {
+          opacity: 1 !important;
+          transform: none !important;
+        }
+        .phv3-pillar {
+          opacity: 1 !important;
+          transform: none !important;
+        }
+        .phv3-stat {
+          opacity: 1 !important;
+          transform: none !important;
+        }
+        .phv3-step {
+          opacity: 1 !important;
+          transform: none !important;
+        }
+        .phv3-clip {
+          clip-path: inset(0 0% 0 0) !important;
+        }
+        .phv3-fadeup {
+          opacity: 1 !important;
+          transform: none !important;
+        }
         .phv3-pillar {
           gap: 12px;
           padding: 16px 0;
@@ -329,27 +352,49 @@ export default function MyPhilosophy() {
 
   /* ── intersection observers ── */
   useEffect(() => {
-    const observe = (ref, className) => {
-      if (!ref) return;
-      const obs = new IntersectionObserver(([e]) => {
-        if (e.isIntersecting) { ref.classList.add(className); obs.disconnect(); }
-      }, { threshold: 0.12 });
-      obs.observe(ref);
-      return obs;
-    };
-
+    const isMobile = window.innerWidth < 768;
     const root = sectionRef.current;
-    if (root) {
-      const obs = new IntersectionObserver(([e]) => {
-        if (e.isIntersecting) { setEntered(true); obs.disconnect(); }
-      }, { threshold: 0.08 });
-      obs.observe(root);
-    }
+    
+    if (isMobile) {
+      // Mobile: trigger animations immediately on mount
+      setTimeout(() => {
+        setEntered(true);
+        
+        // Force all animated elements to show
+        root?.querySelectorAll('.phv3-char').forEach(el => el.classList.add('phv3-entered'));
+        root?.querySelectorAll('.phv3-clip').forEach(el => el.classList.add('phv3-entered'));
+        root?.querySelectorAll('.phv3-fadeup').forEach(el => el.classList.add('phv3-entered'));
+        root?.querySelectorAll('.phv3-pillar').forEach(el => el.classList.add('phv3-entered'));
+        root?.querySelectorAll('.phv3-stat').forEach(el => el.classList.add('phv3-stats-visible'));
+        root?.querySelectorAll('.phv3-step').forEach(el => el.classList.add('phv3-process-visible'));
+        
+        if (statsRef.current) statsRef.current.classList.add("phv3-stats-visible");
+        if (processRef.current) processRef.current.classList.add("phv3-process-visible");
+        if (beliefRef.current) beliefRef.current.classList.add("phv3-belief-visible");
+      }, 50);
+    } else {
+      // Desktop: use IntersectionObserver
+      const observe = (ref, className) => {
+        if (!ref) return;
+        const obs = new IntersectionObserver(([e]) => {
+          if (e.isIntersecting) { ref.classList.add(className); obs.disconnect(); }
+        }, { threshold: 0.12 });
+        obs.observe(ref);
+        return obs;
+      };
 
-    const o1 = observe(statsRef.current, "phv3-stats-visible");
-    const o2 = observe(processRef.current, "phv3-process-visible");
-    const o3 = observe(beliefRef.current, "phv3-belief-visible");
-    return () => { [o1,o2,o3].forEach(o => o?.disconnect()); };
+      if (root) {
+        const obs = new IntersectionObserver(([e]) => {
+          if (e.isIntersecting) { setEntered(true); obs.disconnect(); }
+        }, { threshold: 0.08 });
+        obs.observe(root);
+      }
+
+      const o1 = observe(statsRef.current, "phv3-stats-visible");
+      const o2 = observe(processRef.current, "phv3-process-visible");
+      const o3 = observe(beliefRef.current, "phv3-belief-visible");
+      return () => { [o1,o2,o3].forEach(o => o?.disconnect()); };
+    }
   }, []);
 
   /* ── char helpers ── */
@@ -393,7 +438,7 @@ export default function MyPhilosophy() {
         }} />
 
         {/* ── main two-column body (stacks on mobile) ── */}
-        <div style={{ 
+        <div style={{
           display: "flex", 
           flexDirection: window.innerWidth < 768 ? "column" : "row",
           width: "100%", 
@@ -420,7 +465,7 @@ export default function MyPhilosophy() {
                 <div style={{
                   fontFamily: "Compacta",
                   color: "#1a0a14",
-                  fontSize: "clamp(80px,13vw,180px)",
+                  fontSize: "clamp(120px,13vw,180px)",
                   lineHeight: 0.88,
                   fontWeight: 400,
                   letterSpacing: "0.02em",
@@ -435,7 +480,7 @@ export default function MyPhilosophy() {
                 <div style={{
                   fontFamily: "Compacta",
                   color: "#1a0a14",
-                  fontSize: "clamp(44px,11.5vw,180px)",
+                  fontSize: "clamp(80px,9vw,180px)",
                   lineHeight: 0.9,
                   fontWeight: 400,
                   letterSpacing: "0.03em",

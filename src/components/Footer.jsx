@@ -289,8 +289,8 @@ const Footer = () => {
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 md:gap-6 py-6 md:py-8 px-4 md:px-[clamp(20px,5vw,60px)] text-xs md:text-sm">
         {/* Left */}
         <p className="text-[0.65rem] md:text-[0.75rem] uppercase tracking-widest text-gray-400 leading-relaxed m-0" style={{ fontFamily: "'DM Sans',sans-serif" }}>
-          © 2025 Manish Kumar, All Rights Reserved<br />
-          <motion.a href="#" className="text-gray-400 underline hover:text-amber-400" style={{ textUnderlineOffset: 3 }} whileHover={{ color: "#fbbf24" }}>Old Folio</motion.a>
+          © 2026 Manish Kumar, All Rights Reserved<br />
+          <motion.a href="#" className="text-gray-400 underline hover:text-amber-400" style={{ textUnderlineOffset: 3 }} whileHover={{ color: "#fbbf24" }}></motion.a>
         </p>
 
         {/* Centre badge */}

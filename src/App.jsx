@@ -3,30 +3,50 @@ import { lazy, Suspense, useState } from 'react'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import Home from './sections/Home'
-import Work from './sections/Work'
-import About from './sections/About'
 import useLenisSmoothScroll from './hooks/useLenisSmoothScroll'
 import Landing2 from './sections/Landing2'
-import MyPhilosophy from './sections/MyPhilosophy'
-import WhatICanDo from './sections/WhatCan'
 import LoadingScreen from './components/LoadingAnimation'
 
-// Lazy load the Tetris game (not needed on initial page load)
+// Lazy load heavy sections (below the fold)
+const About = lazy(() => import('./sections/About'))
+const Work = lazy(() => import('./sections/Work'))
+const MyPhilosophy = lazy(() => import('./sections/MyPhilosophy'))
+const WhatICanDo = lazy(() => import('./sections/WhatCan'))
 const RhythmTetris = lazy(() => import('./game/RhythmTetris'))
+
+// Fallback component for lazy-loaded sections
+const SectionFallback = () => (
+  <div className="w-full bg-white py-20 flex items-center justify-center">
+    <div className="text-gray-400">Loading...</div>
+  </div>
+)
 
 function PortfolioHome({ onImageLoaded }) {
   useLenisSmoothScroll(true)
 
   return (
     <div className="w-full relative">
-  
       <Navbar />
       <Home onImageLoaded={onImageLoaded} />
       <Landing2 />
-      <About />
-      <Work />
-      <MyPhilosophy />
-      <WhatICanDo />
+      
+      {/* Lazy-loaded sections with Suspense fallback */}
+      <Suspense fallback={<SectionFallback />}>
+        <About />
+      </Suspense>
+      
+      <Suspense fallback={<SectionFallback />}>
+        <Work />
+      </Suspense>
+      
+      <Suspense fallback={<SectionFallback />}>
+        <MyPhilosophy />
+      </Suspense>
+      
+      <Suspense fallback={<SectionFallback />}>
+        <WhatICanDo />
+      </Suspense>
+      
       <Footer />
     </div>
   )
@@ -44,7 +64,7 @@ export default function App() {
         <Route 
           path="/tetris" 
           element={
-            <Suspense fallback={<div className="w-full h-screen bg-white flex items-center justify-center"><p className="text-white">Loading game...</p></div>}>
+            <Suspense fallback={<div className="w-full h-screen bg-white flex items-center justify-center"><p className="text-gray-500">Loading game...</p></div>}>
               <RhythmTetris />
             </Suspense>
           } 

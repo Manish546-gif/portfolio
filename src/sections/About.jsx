@@ -128,7 +128,27 @@ export default function About() {
       }
       .ph-btn:hover { background:#3a1a28; transform: scale(1.15) rotate(-45deg) !important; }
 
-
+      /* ── Mobile responsive ── */
+      @media (max-width: 768px) {
+        .ph-char {
+          opacity: 1 !important;
+          transform: none !important;
+        }
+        .ph-italic-clip {
+          clip-path: inset(0 0% 0 0) !important;
+        }
+        .ph-fade {
+          opacity: 1 !important;
+          transform: none !important;
+        }
+        .ph-divider {
+          transform: scaleY(1) !important;
+        }
+        .ph-qword {
+          opacity: 1 !important;
+          transform: none !important;
+        }
+      }
     `;
     document.head.appendChild(s);
     return () => { const el = document.getElementById("phil-anim-styles"); if (el) el.remove(); };
@@ -199,16 +219,41 @@ export default function About() {
   useEffect(() => {
     const root = sectionRef.current;
     if (!root) return;
-    const obs = new IntersectionObserver(([e]) => {
-      if (e.isIntersecting) {
+    
+    const isMobile = window.innerWidth < 768;
+    
+    if (isMobile) {
+      // Mobile: trigger immediately on mount
+      setTimeout(() => {
         setEntered(true);
-        setTimeout(() => scramble(caption1Ref.current, "I HAVE MAD MULTIPLE WEBSITES FOR DIFFERENT ORGANIZATIONS.", 900), 650);
-        setTimeout(() => scramble(caption2Ref.current, "MY FORTE LIES IN TECH, BEAUTY, FASHION, FOOD, CRYPTO AND SAAS", 900), 820);
-        obs.disconnect();
-      }
-    }, { threshold: 0.12 });
-    obs.observe(root);
-    return () => obs.disconnect();
+        // Force all animated elements to show
+        root?.querySelectorAll('.ph-char').forEach(el => el.classList.add('go'));
+        root?.querySelectorAll('.ph-italic-clip').forEach(el => el.classList.add('ph-italic-go'));
+        root?.querySelectorAll('.ph-fade').forEach(el => el.classList.add('go'));
+        root?.querySelectorAll('.ph-divider').forEach(el => el.classList.add('go'));
+        root?.querySelectorAll('.ph-qword').forEach(el => el.classList.add('go'));
+        
+        scramble(caption1Ref.current, "I HAVE MAD MULTIPLE WEBSITES FOR DIFFERENT ORGANIZATIONS.", 900);
+        scramble(caption2Ref.current, "MY FORTE LIES IN TECH, BEAUTY, FASHION, FOOD, CRYPTO AND SAAS", 900);
+      }, 50);
+    } else {
+      // Desktop: use IntersectionObserver
+      const obs = new IntersectionObserver(([e]) => {
+        if (e.isIntersecting) {
+          setEntered(true);
+          root?.querySelectorAll('.ph-char').forEach(el => el.classList.add('go'));
+          root?.querySelectorAll('.ph-italic-clip').forEach(el => el.classList.add('ph-italic-go'));
+          root?.querySelectorAll('.ph-fade').forEach(el => el.classList.add('go'));
+          root?.querySelectorAll('.ph-divider').forEach(el => el.classList.add('go'));
+          root?.querySelectorAll('.ph-qword').forEach(el => el.classList.add('go'));
+          setTimeout(() => scramble(caption1Ref.current, "I HAVE MAD MULTIPLE WEBSITES FOR DIFFERENT ORGANIZATIONS.", 900), 650);
+          setTimeout(() => scramble(caption2Ref.current, "MY FORTE LIES IN TECH, BEAUTY, FASHION, FOOD, CRYPTO AND SAAS", 900), 820);
+          obs.disconnect();
+        }
+      }, { threshold: 0.12 });
+      obs.observe(root);
+      return () => obs.disconnect();
+    }
   }, []);
 
   /* ── split chars helper ── */
@@ -254,7 +299,7 @@ export default function About() {
               <div className="relative" data-depth="0.2" style={{ position:"relative", display:"inline-block", width:"100%" }}>
                 <div
                   className={`ph-chars-wrap ${entered ? "ph-chars-go" : ""}`}
-                  style={{ fontFamily:"Compacta", color:"#1a0a14", fontSize:"clamp(120px,18vw,260px)", lineHeight:0.88, display:"block" ,fontWeight:700}}
+                  style={{ fontFamily:"Compacta", color:"#1a0a14", fontSize:"clamp(120px,12vw,260px)", lineHeight:0.88, display:"block" ,fontWeight:700}}
                 >
                   {splitChars("CRAFTING", 0)}
                 </div>
@@ -262,7 +307,7 @@ export default function About() {
                   className={`ph-italic-clip ${entered ? "ph-italic-go" : ""}`}
                   style={{
                     fontFamily:"FleurDeLeah", fontStyle:"italic", fontWeight:400,height:180, color:"#d4607a",paddingLeft:10,paddingRight:14,
-                    fontSize:"clamp(38px,14vw,146px)", position:"absolute", top:"24%", left:"7%",
+                    fontSize:"clamp(38px,10vw,106px)", position:"absolute", top:"24%", left:"7%",
                      pointerEvents:"none", transitionDelay: "0.3s",
                   }}
                 >
@@ -274,7 +319,7 @@ export default function About() {
               <div data-depth="0.35" style={{ position:"relative", display:"inline-block", width:"100%", marginTop:"-0.04em" }}>
                 <div
                   className={`${entered ? "ph-chars-go" : ""}`}
-                  style={{ fontFamily:"Compacta", color:"#1a0a14", fontSize:"clamp(120px,18vw,220px)", lineHeight:0.88, display:"block" ,fontWeight:600 }}
+                  style={{ fontFamily:"Compacta", color:"#1a0a14", fontSize:"clamp(120px,14vw,220px)", lineHeight:0.88, display:"block" ,fontWeight:600 }}
                 >
                   {splitChars("LEGACIES", 8)}
                 </div>
@@ -332,9 +377,9 @@ export default function About() {
           <div className="flex flex-col justify-start w-full md:w-[45%] px-4 md:px-12 md:pl-10 py-8 md:py-10 relative border-t md:border-t-0 md:border-l border-gray-300/40">
              <div className="h-32 md:h-80 w-full md:pr-26">
               <div className="h-20 md:h-30 w-full gap-2 md:gap-5 flex justify-start md:justify-end">
-                <img className="h-[90%] w-auto" src={icon} alt="" />
-                <img className="h-[90%] w-auto" src={icon} alt="" />
-                <img className="h-[90%] w-auto" src={icon} alt="" />
+                <img className="h-[90%] w-auto rounded-lg" src={icon} alt="" />
+                <img className="h-[90%] w-auto rounded-lg" src={icon} alt="" />
+                <img className="h-[90%] w-auto rounded-lg" src={icon} alt="" />
               </div>
              </div>
             {/* WHAT I DO */}

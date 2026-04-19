@@ -7,6 +7,7 @@ export default defineConfig({
   plugins: [react(), tailwindcss()],
   build: {
     chunkSizeWarningLimit: 750,
+    target: 'esnext',
     rollupOptions: {
       output: {
         manualChunks(id) {
@@ -17,9 +18,15 @@ export default defineConfig({
             if (id.includes('gsap') || id.includes('lenis')) {
               return 'animations'
             }
+            if (id.includes('three')) {
+              return 'three'
+            }
           }
         },
       },
     },
+  },
+  optimizeDeps: {
+    include: ['react', 'react-dom', 'gsap', 'lenis', 'framer-motion'],
   },
 })

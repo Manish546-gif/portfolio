@@ -141,7 +141,7 @@ export default function LoadingScreen({ onComplete, shouldClose = false }) {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 1.28, duration: 0.55, ease: EXPO }}
             >
-              © 2025
+              © 2026
             </motion.span>
           </div>
 

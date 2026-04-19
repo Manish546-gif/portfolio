@@ -185,7 +185,7 @@ const ImageWithViewButton = ({ imageSrc, projectUrl, className = "" }) => {
       onClick={() => {
         if (projectUrl) window.open(projectUrl, "_blank");
       }}
-      className={`relative overflow-hidden group cursor-pointer bg-none border-none p-0 w-full h-full ${className}`}
+      className={`relative overflow-hidden group cursor-pointer bg-none border-none p-0 w-full h-full rounded-lg ${className}`}
       style={{ pointerEvents: "auto" }}
       aria-label="View project"
     >
@@ -340,24 +340,21 @@ const Work = ({ isReady = true }) => {
     return (
       <section id="work" className="bg-white border-b border-[#1A0A14]">
         {/* Mobile hero heading */}
-        <div className="px-4 pt-12 pb-8">
-          <div className="overflow-hidden perspective-[600px]">
-            <h1
-              style={{ fontFamily: "Compacta" }}
-              className="text-[5.5rem] leading-none text-[#1A0A14] font-extrabold"
-            >
-              <AnimatedLetters text="Featured" delay={0} staggerDelay={0.055} rotateFrom={90} />
-            </h1>
-            <h1
-              style={{ fontFamily: "Compacta" }}
-              className="text-[5.5rem] leading-none text-[#1A0A14] font-extrabold ml-10"
-            >
-              <AnimatedLetters text="Work" delay={0.5} staggerDelay={0.07} rotateFrom={90} />
-            </h1>
-          </div>
+        <div className="px-6 pt-16 pb-12">
+          <motion.h1
+            style={{ fontFamily: "Compacta" }}
+            className="text-5xl leading-tight text-[#1A0A14] font-extrabold mb-4"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+          >
+            <AnimatedLetters text="Featured Work" delay={0} staggerDelay={0.055} rotateFrom={90} />
+          </motion.h1>
+          
           {/* Divider line */}
           <motion.div
-            className="h-px bg-gray-400 mt-4"
+            className="h-0.5 bg-gray-300 w-16"
             initial={{ scaleX: 0 }}
             whileInView={{ scaleX: 1 }}
             transition={{ duration: 0.9, ease: "easeOut" }}
@@ -367,95 +364,271 @@ const Work = ({ isReady = true }) => {
         </div>
 
         {/* Project 1 — 1Earth Properties */}
-        <MobileProjectCard
-          indicator={fl}
-          title="1Earth Properties"
-          overlayWord="INTERFACE"
-          overlayScript="Craft"
-          images={[img1, img2, img3]}
-          projectUrls={["https://oneearthproperties.co.in/", "https://oneearthproperties.co.in/"]}
-          desc1="1Earth Properties is designed as a modern real estate platform that brings clarity and elegance to property discovery. The experience is crafted to feel intuitive."
-          desc2="Every interaction is thoughtfully refined to create a seamless journey, combining smooth transitions and structured design to deliver a polished browsing experience."
-        />
-
-        {/* Project 2 — Auremont */}
-        <MobileProjectCard
-          indicator={fl1}
-          title="Auremont"
-          overlayWord="INTERACTIVE"
-          overlayScript="Design"
-          images={[img4, img5]}
-          projectUrls={["https://auremont.vercel.app/", "https://auremont.vercel.app/"]}
-          desc1="Auremont is shaped as a narrative-driven real estate platform, where each project is presented as a story rather than just a listing."
-          desc2="The experience focuses on highlighting the vision behind each property, blending storytelling with structured presentation to create a refined journey."
-        />
-
-        {/* Project 3 — Learnkins */}
-        <div className="px-4 mb-16">
-          <div className="grid grid-cols-2 gap-3 mb-6">
-            <div className="aspect-3/4 overflow-hidden">
-              <GridDistortion
-                imageSrc={img6}
-                grid={70}
-                mouse={0.08}
-                strength={0.12}
-                relaxation={0.9}
-                className="h-full w-full object-cover"
-              />
-            </div>
-            <div className="flex flex-col gap-3">
-              <div className="flex-1 overflow-hidden">
-                <GridDistortion
-                  imageSrc={img7}
-                  grid={70}
-                  mouse={0.08}
-                  strength={0.12}
-                  relaxation={0.9}
-                  className="h-full w-full object-cover"
-                />
-              </div>
-              <div className="flex-1 overflow-hidden">
-                <GridDistortion
-                  imageSrc={img9}
-                  grid={70}
-                  mouse={0.08}
-                  strength={0.12}
-                  relaxation={0.9}
-                  className="h-full w-full object-cover"
-                />
-              </div>
-            </div>
-          </div>
-          <div className="flex items-start gap-3 mb-3">
+        <div className="border-t border-gray-200 py-12">
+          <div className="px-6">
+            {/* Project number and title */}
             <motion.div
-              initial={{ scale: 0, opacity: 0 }}
-              whileInView={{ scale: 1, opacity: 1 }}
-              animate={{ rotate: 360 }}
-              transition={{ scale: { duration: 0.5 }, rotate: { duration: 5, repeat: Infinity, ease: "linear" } }}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
               viewport={{ once: true }}
-              className="h-10 w-10 rounded-full shrink-0"
+              className="mb-8"
             >
-              <img className="w-full h-full object-cover rounded-full" src={fl2} alt="" />
+              <p style={{ fontFamily: 'PPEditorialNew' }} className="text-xs uppercase tracking-widest text-gray-500 mb-3">Project 01</p>
+              <h2 style={{ fontFamily: "Compacta" }} className="text-3xl font-bold text-[#1A0A14] mb-2">
+                1Earth Properties
+              </h2>
+              <p className="text-sm text-gray-600">Modern Real Estate Platform</p>
             </motion.div>
-            <motion.h3
-              initial={{ y: 20, opacity: 0 }}
-              whileInView={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.5 }}
+
+            {/* Main image */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6 }}
               viewport={{ once: true }}
-              className="text-2xl font-serif text-[#1A0A14]"
+              className="mb-6 overflow-hidden rounded-lg aspect-video bg-gray-100"
             >
-              Learnkins
-            </motion.h3>
-          </div>
-          <div className="space-y-3 text-sm">
-            <BulletParagraph delay={0.1}>
-              Learnkins is an innovative learning platform designed for students to study through interactive games and engaging activities while maintaining detailed progress records.
-            </BulletParagraph>
-            <BulletParagraph delay={0.25}>
-              Features include comprehensive admin panel for educators, robust parental control system for guardians, progress tracking, and all essential tools for effective learning management.
-            </BulletParagraph>
+              <ImageWithViewButton
+                imageSrc={img1}
+                projectUrl="https://oneearthproperties.co.in/"
+                className="w-full h-full object-cover"
+              />
+            </motion.div>
+
+            {/* Description */}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              viewport={{ once: true }}
+              className="space-y-4 mb-8"
+            >
+              <p className="text-sm leading-relaxed text-gray-700">
+                1Earth Properties is designed as a modern real estate platform that brings clarity and elegance to property discovery. The experience is crafted to feel intuitive, allowing users to explore spaces with ease and confidence.
+              </p>
+              <p className="text-sm leading-relaxed text-gray-700">
+                Every interaction is thoughtfully refined to create a seamless journey, combining smooth transitions and structured design to deliver a polished and engaging browsing experience.
+              </p>
+            </motion.div>
+
+            {/* Secondary images */}
+            <div className="grid grid-cols-2 gap-3 mb-8">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.6, delay: 0.15 }}
+                viewport={{ once: true }}
+                className="overflow-hidden rounded-lg aspect-square bg-gray-100"
+              >
+                <ImageWithViewButton
+                  imageSrc={img2}
+                  projectUrl="https://oneearthproperties.co.in/"
+                  className="w-full h-full object-cover"
+                />
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                viewport={{ once: true }}
+                className="overflow-hidden rounded-lg aspect-square bg-gray-100"
+              >
+                <ImageWithViewButton
+                  imageSrc={img3}
+                  projectUrl="https://oneearthproperties.co.in/"
+                  className="w-full h-full object-cover"
+                />
+              </motion.div>
+            </div>
+
+            {/* CTA Button */}
+            <motion.a
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              href="https://oneearthproperties.co.in/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block w-full py-4 px-6 bg-[#1A0A14] text-white text-center font-semibold rounded-lg hover:bg-gray-800 transition-colors"
+            >
+              View Project
+            </motion.a>
           </div>
         </div>
+
+        {/* Project 2 — Auremont */}
+        <div className="border-t border-gray-200 py-12">
+          <div className="px-6">
+            {/* Project number and title */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+              className="mb-8"
+            >
+              <p style={{ fontFamily: 'PPEditorialNew' }} className="text-xs uppercase tracking-widest text-gray-500 mb-3">Project 02</p>
+              <h2 style={{ fontFamily: "Compacta" }} className="text-3xl font-bold text-[#1A0A14] mb-2">
+                Auremont
+              </h2>
+              <p className="text-sm text-gray-600">Narrative-Driven Real Estate</p>
+            </motion.div>
+
+            {/* Main image */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+              className="mb-6 overflow-hidden rounded-lg aspect-video bg-gray-100"
+            >
+              <ImageWithViewButton
+                imageSrc={img4}
+                projectUrl="https://auremont.vercel.app/"
+                className="w-full h-full object-cover"
+              />
+            </motion.div>
+
+            {/* Description */}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              viewport={{ once: true }}
+              className="space-y-4 mb-8"
+            >
+              <p className="text-sm leading-relaxed text-gray-700">
+                Auremont is shaped as a narrative-driven real estate platform, where each project is presented as a story rather than just a listing. It invites users to explore developments through a more immersive and meaningful perspective.
+              </p>
+              <p className="text-sm leading-relaxed text-gray-700">
+                The experience focuses on highlighting the vision behind each property, blending storytelling with structured presentation to create a refined and engaging journey through the company's portfolio.
+              </p>
+            </motion.div>
+
+            {/* Secondary image */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6, delay: 0.15 }}
+              viewport={{ once: true }}
+              className="mb-8 overflow-hidden rounded-lg aspect-video bg-gray-100"
+            >
+              <ImageWithViewButton
+                imageSrc={img5}
+                projectUrl="https://auremont.vercel.app/"
+                className="w-full h-full object-cover"
+              />
+            </motion.div>
+
+            {/* CTA Button */}
+            <motion.a
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              href="https://auremont.vercel.app/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block w-full py-4 px-6 bg-[#1A0A14] text-white text-center font-semibold rounded-lg hover:bg-gray-800 transition-colors"
+            >
+              View Project
+            </motion.a>
+          </div>
+        </div>
+
+        {/* Project 3 — Learnkins */}
+        <div className="border-t border-gray-200 py-12">
+          <div className="px-6">
+            {/* Project number and title */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+              className="mb-8"
+            >
+              <p style={{ fontFamily: 'PPEditorialNew' }} className="text-xs uppercase tracking-widest text-gray-500 mb-3">Project 03</p>
+              <h2 style={{ fontFamily: "Compacta" }} className="text-3xl font-bold text-[#1A0A14] mb-2">
+                Learnkins
+              </h2>
+              <p className="text-sm text-gray-600">Interactive Learning Platform</p>
+            </motion.div>
+
+            {/* Main image */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+              className="mb-6 overflow-hidden rounded-lg aspect-video bg-gray-100"
+            >
+              <ImageWithViewButton
+                imageSrc={img6}
+                projectUrl="https://learnkins.com/"
+                className="w-full h-full object-cover"
+              />
+            </motion.div>
+
+            {/* Description */}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              viewport={{ once: true }}
+              className="space-y-4 mb-8"
+            >
+              <p className="text-sm leading-relaxed text-gray-700">
+                Learnkins is an innovative learning platform designed for students to study through interactive games and engaging activities while maintaining detailed progress records and achievement tracking throughout their learning journey.
+              </p>
+              <p className="text-sm leading-relaxed text-gray-700">
+                Features include comprehensive admin panel for educators, robust parental control system for guardians, detailed analytics, and all essential tools required for effective learning management and student engagement.
+              </p>
+            </motion.div>
+
+            {/* Secondary images */}
+            <div className="grid grid-cols-2 gap-3 mb-8">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.6, delay: 0.15 }}
+                viewport={{ once: true }}
+                className="overflow-hidden rounded-lg aspect-square bg-gray-100"
+              >
+                <ImageWithViewButton
+                  imageSrc={img7}
+                  projectUrl="https://learnkins.com/"
+                  className="w-full h-full object-cover"
+                />
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                viewport={{ once: true }}
+                className="overflow-hidden rounded-lg aspect-square bg-gray-100"
+              >
+                <ImageWithViewButton
+                  imageSrc={img9}
+                  projectUrl="https://learnkins.com/"
+                  className="w-full h-full object-cover"
+                />
+              </motion.div>
+            </div>
+
+            {/* CTA Button */}
+            <motion.a
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              href="https://learnkins.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block w-full py-4 px-6 bg-[#1A0A14] text-white text-center font-semibold rounded-lg hover:bg-gray-800 transition-colors"
+            >
+              View Project
+            </motion.a>
+          </div>
+        </div>
+
+        {/* Bottom spacing */}
+        <div className="h-12" />
       </section>
     );
   }
@@ -486,7 +659,7 @@ const Work = ({ isReady = true }) => {
               <div style={{ perspective: "800px" }}>
                 <h1
                   style={{ fontFamily: "Compacta" }}
-                  className="text-[11rem] text-[#1A0A14] font-extrabold"
+                  className="text-[10rem] text-[#1A0A14] font-extrabold"
                 >
                   <AnimatedLetters
                     text="Featured"
@@ -497,7 +670,7 @@ const Work = ({ isReady = true }) => {
                 </h1>
                 <h1
                   style={{ fontFamily: "Compacta" }}
-                  className="text-[11rem] text-[#1A0A14] font-extrabold ml-35"
+                  className="text-[10rem] text-[#1A0A14] font-extrabold ml-35"
                 >
                   <AnimatedLetters
                     text="Work"
@@ -543,7 +716,7 @@ const Work = ({ isReady = true }) => {
             {/* ── Project 1 images ── */}
             <div className="h-160 flex items-center w-4xl z-20">
               <div>
-                <div className="h-140 w-lg overflow-hidden">
+                <div className="h-140 w-lg overflow-hidden rounded-lg">
                   <ImageWithViewButton
                     imageSrc={img1}
                     projectUrl="https://oneearthproperties.co.in/"
@@ -567,7 +740,7 @@ const Work = ({ isReady = true }) => {
               </div>
               <div className="w-full h-full pl-10 pt-17">
                 <div className="w-full h-1/2">
-                  <div className="w-80 min-h-64 overflow-hidden">
+                  <div className="w-80 min-h-64 overflow-hidden rounded-lg">
                     <ImageWithViewButton
                       imageSrc={img2}
                       projectUrl="https://oneearthproperties.co.in/"
@@ -579,7 +752,7 @@ const Work = ({ isReady = true }) => {
                   </div>
                 </div>
                 <div className="w-full h-1/2">
-                  <div className="w-80 min-h-64 overflow-hidden">
+                  <div className="w-80 min-h-64 overflow-hidden rounded-lg">
                     <ImageWithViewButton
                       imageSrc={img3}
                       projectUrl="https://oneearthproperties.co.in/"
@@ -599,7 +772,7 @@ const Work = ({ isReady = true }) => {
                 {/* Bottom layer first */}
                 <h1
                   style={{ fontFamily: "Compacta" }}
-                  className="text-[#1A0A14] font-extrabold text-[15rem]"
+                  className="text-[#1A0A14] font-extrabold text-[13rem]"
                 >
                   <AnimatedLetters
                     text="INTERFACE"
@@ -657,7 +830,7 @@ const Work = ({ isReady = true }) => {
             {/* ── Project 2 images ── */}
             <div className="gap-10 flex h-160 z-20 w-5xl">
               <div className="h-full w-1/2">
-                <div className="h-4/5 w-full overflow-hidden">
+                <div className="h-4/5 w-full overflow-hidden rounded-lg">
                   <ImageWithViewButton
                     imageSrc={img4}
                     projectUrl="https://auremont.vercel.app/"
@@ -669,7 +842,7 @@ const Work = ({ isReady = true }) => {
                 </div>
               </div>
               <div className="h-full w-1/2 pt-17">
-                <div className="h-5/6 w-full overflow-hidden">
+                <div className="h-5/6 w-full overflow-hidden rounded-lg">
                   <ImageWithViewButton
                     imageSrc={img5}
                     projectUrl="https://auremont.vercel.app/"
@@ -688,7 +861,7 @@ const Work = ({ isReady = true }) => {
                 {/* Bottom layer first */}
                 <h1
                   style={{ fontFamily: "Compacta" }}
-                  className="text-[#1A0A14] font-extrabold text-[15rem]"
+                  className="text-[#1A0A14] font-extrabold text-[13rem]"
                 >
                   <AnimatedLetters
                     text="INTERACTIVE"
@@ -747,7 +920,7 @@ const Work = ({ isReady = true }) => {
             <div className="w-5xl h-170 z-20 flex items-center">
               <div className="h-full w-4/7">
                 <div className="h-105 w-full">
-                  <div className="h-70 w-full overflow-hidden">
+                  <div className="h-70 w-full overflow-hidden rounded-lg">
                     <ImageWithViewButton
                       imageSrc={img6}
                       projectUrl="https://learnkins.com/"
@@ -759,7 +932,7 @@ const Work = ({ isReady = true }) => {
                   </div>
                 </div>
                 <div className="w-full h-65">
-                  <div className="h-50 w-5/8 ml-54 overflow-hidden">
+                  <div className="h-50 w-5/8 ml-54 overflow-hidden rounded-lg">
                     <ImageWithViewButton
                       imageSrc={img9}
                       projectUrl="https://learnkins.com/"
@@ -772,7 +945,7 @@ const Work = ({ isReady = true }) => {
                 </div>
               </div>
               <div className="h-full w-2/6 pt-60 ml-5">
-                <div className="min-h-[150px] w-full overflow-hidden">
+                <div className="min-h-[150px] w-full overflow-hidden rounded-lg">
                   <ImageWithViewButton
                     imageSrc={img7}
                     projectUrl="https://learnkins.com/"

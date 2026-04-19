@@ -117,10 +117,10 @@ function VerticalMarquee({ images }) {
         {doubled.map((src, i) => (
           <div
             key={i}
+            className="rounded-lg"
             style={{
               width: '100%',
               height: '155px',
-              borderRadius: '4px',
               overflow: 'hidden',
               flexShrink: 0,
               border: `1px solid ${INK_FAINT}`,
@@ -130,6 +130,7 @@ function VerticalMarquee({ images }) {
               src={src}
               alt=""
               loading="lazy"
+              className="rounded-lg"
               style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', filter: 'grayscale(30%)' }}
             />
           </div>

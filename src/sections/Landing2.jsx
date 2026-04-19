@@ -1,8 +1,9 @@
 import React from "react";
 import star from "../assets/star.svg";
 import { motion } from "framer-motion";
-import img from "../assets/project2img1.png";
+
 import AnimatedPlus from "../components/animatedplus";
+import GridDistortion from "../components/GridDistortion";
 
 const EXPO = [0.22, 1, 0.36, 1];
 
@@ -63,14 +64,14 @@ const Landing2 = () => {
           {/* Center Logo */}
           <div className="min-h-32 md:h-110 w-full md:w-1/3 flex justify-center items-center py-8 md:py-0">
             <div className="h-32 md:h-45 border border-[#1a0a14] gap-10 md:gap-17 w-70 md:w-120 rounded-full flex justify-center items-center">
-              <img className="h-9 md:h-9 w-9 md:w-9 rotate-star" src={star} alt="" />
+              <img className="h-9 md:h-9 w-9 md:w-9 rotate-star rounded-lg" src={star} alt="" />
               <h1
                 className="text-[#1a0a14] text-5xl sm:text-[4rem] md:text-[6rem]"
                 style={{ fontFamily: "FleurDeLeah" }}
               >
                 MK
               </h1>
-              <img className="h-9 md:h-9 w-9 md:w-9 rotate-star" src={star} alt="" />
+              <img className="h-9 md:h-9 w-9 md:w-9 rotate-star rounded-lg" src={star} alt="" />
             </div>
           </div>
 
@@ -137,11 +138,14 @@ const Landing2 = () => {
               {/* Image Section */}
               <div className="w-full md:h-1/2 relative flex justify-center items-center py-6 md:py-0">
                 <div className="h-px w-[90%] bg-gray-400 absolute top-[50%] rotate-155 z-1 left-[5%]"></div>
-                <div className="h-40 sm:h-56 md:h-75 w-1/2 sm:w-2/5 md:w-2/7 z-2">
-                  <img
-                    className="h-full w-full object-cover"
-                    src={img}
-                    alt="profile"
+                <div className="h-40 sm:h-56 md:h-75 w-1/2 sm:w-2/5 md:w-2/7 z-2 overflow-hidden rounded-lg">
+                  <GridDistortion
+                    imageSrc="https://images.unsplash.com/photo-1555421689-491a97ff2040?w=400&q=80"
+                    grid={20}
+                    mouse={0.12}
+                    strength={0.2}
+                    relaxation={0.88}
+                    className="h-full w-full"
                   />
                 </div>
               </div>
