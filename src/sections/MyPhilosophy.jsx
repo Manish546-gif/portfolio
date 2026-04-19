@@ -480,7 +480,7 @@ export default function MyPhilosophy() {
                 <div style={{
                   fontFamily: "Compacta",
                   color: "#1a0a14",
-                  fontSize: "clamp(80px,9vw,180px)",
+                  fontSize: "clamp(75px,9vw,180px)",
                   lineHeight: 0.9,
                   fontWeight: 400,
                   letterSpacing: "0.03em",

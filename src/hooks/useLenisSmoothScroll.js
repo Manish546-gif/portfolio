@@ -19,13 +19,20 @@ const useLenisSmoothScroll = (enabled = true) => {
       return undefined
     }
 
+    // Detect mobile device
+    const isMobile = window.innerWidth < 768
+
+    // Use shorter duration on mobile for better performance
+    const duration = isMobile ? 0.8 : 1.8
+    const wheelMultiplier = isMobile ? 1.0 : 0.6
+
     const lenis = new Lenis({
-      duration: 1.8,
+      duration: duration,
       easing: defaultEasing,
-      smoothWheel: true,
+      smoothWheel: !isMobile, // Disable smooth wheel on mobile for native feel
       syncTouch: true,
-      touchMultiplier: 1.0,
-      wheelMultiplier: 0.6,
+      touchMultiplier: isMobile ? 1.2 : 1.0, // Faster touch scrolling on mobile
+      wheelMultiplier: wheelMultiplier,
       autoRaf: false,
     })
 

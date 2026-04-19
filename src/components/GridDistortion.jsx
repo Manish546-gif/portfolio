@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 
 const vertexShader = `
@@ -25,6 +25,8 @@ void main() {
 }`;
 
 const GridDistortion = ({ grid = 15, mouse = 0.1, strength = 0.15, relaxation = 0.9, imageSrc, className = '', onImageLoaded }) => {
+  const [isMobile, setIsMobile] = useState(false);
+  const [isLargeScreen, setIsLargeScreen] = useState(false);
   const containerRef = useRef(null);
   const sceneRef = useRef(null);
   const rendererRef = useRef(null);
@@ -34,8 +36,28 @@ const GridDistortion = ({ grid = 15, mouse = 0.1, strength = 0.15, relaxation = 
   const animationIdRef = useRef(null);
   const resizeObserverRef = useRef(null);
 
+  // Check if mobile or large screen on mount and on resize
   useEffect(() => {
-    if (!containerRef.current) return;
+    const checkScreenSize = () => {
+      setIsMobile(window.innerWidth < 768);
+      setIsLargeScreen(window.innerWidth >= 1024); // lg breakpoint
+    };
+
+    checkScreenSize();
+    window.addEventListener('resize', checkScreenSize);
+    return () => window.removeEventListener('resize', checkScreenSize);
+  }, []);
+
+  // Adjust distortion parameters based on screen size
+  const effectiveParams = {
+    mouse: isLargeScreen ? mouse * 1.5 : mouse, // 50% stronger on lg
+    strength: isLargeScreen ? strength * 1.5 : strength, // 50% stronger on lg
+    relaxation: isLargeScreen ? relaxation - 0.05 : relaxation // More responsive on lg
+  };
+
+  // Desktop THREE.js setup - only runs on desktop
+  useEffect(() => {
+    if (isMobile || !containerRef.current) return;
 
     const container = containerRef.current;
 
@@ -186,13 +208,13 @@ const GridDistortion = ({ grid = 15, mouse = 0.1, strength = 0.15, relaxation = 
 
       const data = dataTexture.image.data;
       for (let i = 0; i < size * size; i++) {
-        data[i * 4] *= relaxation;
-        data[i * 4 + 1] *= relaxation;
+        data[i * 4] *= effectiveParams.relaxation;
+        data[i * 4 + 1] *= effectiveParams.relaxation;
       }
 
       const gridMouseX = size * mouseState.x;
       const gridMouseY = size * mouseState.y;
-      const maxDist = size * mouse;
+      const maxDist = size * effectiveParams.mouse;
 
       for (let i = 0; i < size; i++) {
         for (let j = 0; j < size; j++) {
@@ -200,8 +222,8 @@ const GridDistortion = ({ grid = 15, mouse = 0.1, strength = 0.15, relaxation = 
           if (distSq < maxDist * maxDist) {
             const index = 4 * (i + size * j);
             const power = Math.min(maxDist / Math.sqrt(distSq), 10);
-            data[index] += strength * 100 * mouseState.vX * power;
-            data[index + 1] -= strength * 100 * mouseState.vY * power;
+            data[index] += effectiveParams.strength * 100 * mouseState.vX * power;
+            data[index + 1] -= effectiveParams.strength * 100 * mouseState.vY * power;
           }
         }
       }
@@ -244,8 +266,26 @@ const GridDistortion = ({ grid = 15, mouse = 0.1, strength = 0.15, relaxation = 
       cameraRef.current = null;
       planeRef.current = null;
     };
-  }, [grid, mouse, strength, relaxation, imageSrc]);
+  }, [grid, mouse, strength, relaxation, imageSrc, isMobile, isLargeScreen]);
 
+  // For mobile, render just the image
+  if (isMobile) {
+    return (
+      <img
+        src={imageSrc}
+        alt="Background"
+        className={`w-full h-full object-cover ${className}`}
+        onLoad={onImageLoaded}
+        style={{
+          width: '100%',
+          height: '100%',
+          objectFit: 'cover'
+        }}
+      />
+    );
+  }
+
+  // For desktop, render the THREE.js canvas container
   return (
     <div
       ref={containerRef}

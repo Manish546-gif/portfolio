@@ -130,6 +130,13 @@ export default function About() {
 
       /* ── Mobile responsive ── */
       @media (max-width: 768px) {
+        .ph-root {
+          cursor: auto !important;
+        }
+        .ph-cursor,
+        .ph-dot {
+          display: none !important;
+        }
         .ph-char {
           opacity: 1 !important;
           transform: none !important;
@@ -156,6 +163,9 @@ export default function About() {
 
   /* ── smooth cursor ── */
   useEffect(() => {
+    const isMobile = window.innerWidth < 768;
+    if (isMobile) return; // Skip cursor tracking on mobile
+
     const onMv = (e) => { mouse.current = { x: e.clientX, y: e.clientY }; };
     window.addEventListener("mousemove", onMv);
     const loop = () => {
@@ -178,8 +188,10 @@ export default function About() {
 
   /* ── magnetic btn ── */
   useEffect(() => {
+    const isMobile = window.innerWidth < 768;
     const btn = btnRef.current;
-    if (!btn) return;
+    if (!btn || isMobile) return; // Skip magnetic effect on mobile
+
     const onMv = (e) => {
       const r = btn.getBoundingClientRect();
       const dx = e.clientX - (r.left + r.width / 2);
@@ -200,8 +212,10 @@ export default function About() {
 
   /* ── parallax on mouse ── */
   useEffect(() => {
+    const isMobile = window.innerWidth < 768;
     const root = sectionRef.current;
-    if (!root) return;
+    if (!root || isMobile) return; // Skip parallax on mobile
+
     const onMv = (e) => {
       const { width, height, left, top } = root.getBoundingClientRect();
       const rx = ((e.clientX - left) / width  - 0.5) * 2;
@@ -233,7 +247,7 @@ export default function About() {
         root?.querySelectorAll('.ph-divider').forEach(el => el.classList.add('go'));
         root?.querySelectorAll('.ph-qword').forEach(el => el.classList.add('go'));
         
-        scramble(caption1Ref.current, "I HAVE MAD MULTIPLE WEBSITES FOR DIFFERENT ORGANIZATIONS.", 900);
+        scramble(caption1Ref.current, "I HAVE MADE MULTIPLE WEBSITES FOR DIFFERENT ORGANIZATIONS.", 900);
         scramble(caption2Ref.current, "MY FORTE LIES IN TECH, BEAUTY, FASHION, FOOD, CRYPTO AND SAAS", 900);
       }, 50);
     } else {
@@ -299,7 +313,7 @@ export default function About() {
               <div className="relative" data-depth="0.2" style={{ position:"relative", display:"inline-block", width:"100%" }}>
                 <div
                   className={`ph-chars-wrap ${entered ? "ph-chars-go" : ""}`}
-                  style={{ fontFamily:"Compacta", color:"#1a0a14", fontSize:"clamp(120px,12vw,260px)", lineHeight:0.88, display:"block" ,fontWeight:700}}
+                  style={{ fontFamily:"Compacta", color:"#1a0a14", fontSize:"clamp(100px,12vw,260px)", lineHeight:0.88, display:"block" ,fontWeight:700}}
                 >
                   {splitChars("CRAFTING", 0)}
                 </div>
@@ -307,7 +321,7 @@ export default function About() {
                   className={`ph-italic-clip ${entered ? "ph-italic-go" : ""}`}
                   style={{
                     fontFamily:"FleurDeLeah", fontStyle:"italic", fontWeight:400,height:180, color:"#d4607a",paddingLeft:10,paddingRight:14,
-                    fontSize:"clamp(38px,10vw,106px)", position:"absolute", top:"24%", left:"7%",
+                    fontSize:"clamp(55px,10vw,106px)", position:"absolute", top:"24%", left:"7%",
                      pointerEvents:"none", transitionDelay: "0.3s",
                   }}
                 >
@@ -319,7 +333,7 @@ export default function About() {
               <div data-depth="0.35" style={{ position:"relative", display:"inline-block", width:"100%", marginTop:"-0.04em" }}>
                 <div
                   className={`${entered ? "ph-chars-go" : ""}`}
-                  style={{ fontFamily:"Compacta", color:"#1a0a14", fontSize:"clamp(120px,14vw,220px)", lineHeight:0.88, display:"block" ,fontWeight:600 }}
+                  style={{ fontFamily:"Compacta", color:"#1a0a14", fontSize:"clamp(100px,14vw,220px)", lineHeight:0.88, display:"block" ,fontWeight:600 }}
                 >
                   {splitChars("LEGACIES", 8)}
                 </div>
@@ -327,7 +341,7 @@ export default function About() {
                   className={`ph-italic-clip ${entered ? "ph-italic-go" : ""}`}
                   style={{
                     fontFamily:"FleurDeLeah", fontStyle:"italic", fontWeight:400,height:180, color:"#d4607a",paddingLeft:10,paddingRight:14,
-                    fontSize:"clamp(98px,14vw,146px)", position:"absolute", top:"24%", left:"7%",
+                    fontSize:"clamp(68px,14vw,146px)", position:"absolute", top:"20%", left:"7%",
                      pointerEvents:"none", transitionDelay: "0.3s",
                   }}
                 >
