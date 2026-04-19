@@ -9,18 +9,15 @@ export default defineConfig({
     chunkSizeWarningLimit: 750,
     rollupOptions: {
       output: {
-        manualChunks: {
-          'vendor': [
-            'react',
-            'react-dom',
-            'react-router-dom',
-            'framer-motion',
-            'gsap',
-            'lenis',
-          ],
-          'animations': [
-            'gsap/ScrollTrigger',
-          ],
+        manualChunks(id) {
+          if (id.includes('node_modules')) {
+            if (id.includes('react') || id.includes('framer-motion') || id.includes('react-router-dom')) {
+              return 'vendor'
+            }
+            if (id.includes('gsap') || id.includes('lenis')) {
+              return 'animations'
+            }
+          }
         },
       },
     },
