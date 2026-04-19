@@ -234,7 +234,11 @@ const Home = ({ onImageLoaded }) => {
             <motion.a
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              href="#"
+              as="button"
+              onClick={() => {
+                const el = document.getElementById("work");
+                if (el) window.__lenis?.scrollTo(el, { offset: 0, duration: 1.5 });
+              }}
               style={{ fontFamily: 'PPEditorialNew', letterSpacing: '0.08em' }}
               className='bg-black text-white text-xs font-semibold py-3 px-6 rounded-full inline-block hover:bg-gray-800 transition-colors pointer-events-auto uppercase'
             >
