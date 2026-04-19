@@ -12,7 +12,7 @@ import img4 from "../assets/project2img1.png";
 import img5 from "../assets/project2img2.png";
 import img6 from "../assets/project3img1.png";
 import img7 from "../assets/project3img2.png";
-import img8 from "../assets/24.jpg";
+import img8 from "../assets/homelanding.jpg";
 import img9 from "../assets/project3img3.png";
 import { motion, useMotionValue, useSpring, AnimatePresence } from "framer-motion";
 import GridDistortion from "../components/GridDistortion";

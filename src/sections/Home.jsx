@@ -1,7 +1,7 @@
 import React from 'react'
 import { motion } from 'framer-motion'
 import GridDistortion from '../components/GridDistortion'
-import bg23 from '../assets/24.jpg'
+import bg23 from '../assets/homelanding.jpg'
 
 const EXPO = [0.22, 1, 0.36, 1]
 
