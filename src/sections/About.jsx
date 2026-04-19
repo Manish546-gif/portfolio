@@ -45,8 +45,6 @@ export default function About() {
     const s = document.createElement("style");
     s.id = "phil-anim-styles";
     s.innerHTML = `
-      @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;1,400;1,700&family=Bebas+Neue&display=swap');
-
       .phil-root { cursor: none !important; }
       .phil-root * { box-sizing: border-box; }
 
@@ -204,7 +202,7 @@ export default function About() {
     const obs = new IntersectionObserver(([e]) => {
       if (e.isIntersecting) {
         setEntered(true);
-        setTimeout(() => scramble(caption1Ref.current, "I HAVE WON MULTIPLE AWARDS FROM DIFFERENT ORGANIZATIONS.", 900), 650);
+        setTimeout(() => scramble(caption1Ref.current, "I HAVE MAD MULTIPLE WEBSITES FOR DIFFERENT ORGANIZATIONS.", 900), 650);
         setTimeout(() => scramble(caption2Ref.current, "MY FORTE LIES IN TECH, BEAUTY, FASHION, FOOD, CRYPTO AND SAAS", 900), 820);
         obs.disconnect();
       }
@@ -246,17 +244,17 @@ export default function About() {
         <div className="ph-noise" />
 
         {/* Two columns - responsive layout */}
-        <div className="flex flex-col md:flex-row flex-1 w-full relative z-[2] md:min-h-screen">
+        <div className="flex flex-col md:flex-row flex-1 w-full relative z-2 md:min-h-screen">
 
           {/* ── LEFT ── */}
-          <div className="flex flex-col gap-8 md:gap-[30px] w-full md:w-[55%] px-4 md:px-16 py-8 md:py-10">
+          <div className="flex flex-col gap-8 md:gap-7.5 w-full md:w-[55%] px-4 md:px-16 py-8 md:py-10">
 
             {/* CRAFTING */}
             <div style={{ lineHeight:"0.88", userSelect:"none" }}>
               <div className="relative" data-depth="0.2" style={{ position:"relative", display:"inline-block", width:"100%" }}>
                 <div
                   className={`ph-chars-wrap ${entered ? "ph-chars-go" : ""}`}
-                  style={{ fontFamily:"Compacta", color:"#1a0a14", fontSize:"clamp(80px,18vw,260px)", lineHeight:0.88, display:"block" ,fontWeight:700}}
+                  style={{ fontFamily:"Compacta", color:"#1a0a14", fontSize:"clamp(120px,18vw,260px)", lineHeight:0.88, display:"block" ,fontWeight:700}}
                 >
                   {splitChars("CRAFTING", 0)}
                 </div>
@@ -276,7 +274,7 @@ export default function About() {
               <div data-depth="0.35" style={{ position:"relative", display:"inline-block", width:"100%", marginTop:"-0.04em" }}>
                 <div
                   className={`${entered ? "ph-chars-go" : ""}`}
-                  style={{ fontFamily:"Compacta", color:"#1a0a14", fontSize:"clamp(80px,18vw,220px)", lineHeight:0.88, display:"block" ,fontWeight:600 }}
+                  style={{ fontFamily:"Compacta", color:"#1a0a14", fontSize:"clamp(120px,18vw,220px)", lineHeight:0.88, display:"block" ,fontWeight:600 }}
                 >
                   {splitChars("LEGACIES", 8)}
                 </div>
@@ -284,7 +282,7 @@ export default function About() {
                   className={`ph-italic-clip ${entered ? "ph-italic-go" : ""}`}
                   style={{
                     fontFamily:"FleurDeLeah", fontStyle:"italic", fontWeight:400,height:180, color:"#d4607a",paddingLeft:10,paddingRight:14,
-                    fontSize:"clamp(38px,14vw,146px)", position:"absolute", top:"24%", left:"7%",
+                    fontSize:"clamp(98px,14vw,146px)", position:"absolute", top:"24%", left:"7%",
                      pointerEvents:"none", transitionDelay: "0.3s",
                   }}
                 >
@@ -298,8 +296,8 @@ export default function About() {
               className={`ph-fade ${entered ? "go" : ""}`}
               style={{ display:"flex", gap:64, marginTop:24, transitionDelay:"0.9s" }}
             >
-              <p ref={caption1Ref} className="ph-small" style={{ fontFamily:"'Bebas Neue',sans-serif", letterSpacing:"0.1em", color:"#1a0a14", fontSize:11, lineHeight:1.5, width:160, minHeight:48 }} />
-              <p ref={caption2Ref} className="ph-small" style={{ fontFamily:"'Bebas Neue',sans-serif", letterSpacing:"0.1em", color:"#1a0a14", fontSize:11, lineHeight:1.5, width:192, minHeight:48 }} />
+              <p ref={caption1Ref} className="ph-small" style={{ fontFamily: "PPEditorialNew", letterSpacing:"0.1em", color:"#1a0a14", fontSize:11, lineHeight:1.5, width:160, minHeight:48 }} />
+              <p ref={caption2Ref} className="ph-small" style={{fontFamily: "PPEditorialNew", letterSpacing:"0.1em", color:"#1a0a14", fontSize:11, lineHeight:1.5, width:192, minHeight:48 }} />
             </div>
 
             <div style={{ flex:1 }} />
@@ -309,7 +307,7 @@ export default function About() {
               className={`ph-fade flex items-center justify-between px-8 py-6 border-t border-gray-300/40 ${entered ? "go" : ""}`}
               style={{ transitionDelay:"1.15s" }}
             >
-              <span style={{ fontFamily:"'Bebas Neue',sans-serif", letterSpacing:"0.15em", fontSize:13, color:"#1a0a14", fontWeight:500 }}>
+              <span style={{ fontFamily: "PPEditorialNew", letterSpacing:"0.15em", fontSize:13, color:"#1a0a14", fontWeight:500 }}>
                 MY PHILOSOPHY
               </span>
               <button 
@@ -318,7 +316,7 @@ export default function About() {
                   const el = document.getElementById("philosophy");
                   if (el) window.__lenis?.scrollTo(el, { offset: 0, duration: 1.5 });
                 }}
-                className="ph-btn flex items-center justify-center w-14 h-14 rounded-full bg-slate-900 hover:bg-slate-800 flex-shrink-0 transition-all duration-300"
+                className="ph-btn flex items-center justify-center w-14 h-14 rounded-full bg-slate-900 hover:bg-slate-800 shrink-0 transition-all duration-300"
               >
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
                   <path d="M12 5v14M12 19l-7-7M12 19l7-7"/>
@@ -333,7 +331,7 @@ export default function About() {
           {/* ── RIGHT ── */}
           <div className="flex flex-col justify-start w-full md:w-[45%] px-4 md:px-12 md:pl-10 py-8 md:py-10 relative border-t md:border-t-0 md:border-l border-gray-300/40">
              <div className="h-32 md:h-80 w-full md:pr-26">
-              <div className="h-20 md:h-30 w-full gap-2 md:gap-5 flex justify-end">
+              <div className="h-20 md:h-30 w-full gap-2 md:gap-5 flex justify-start md:justify-end">
                 <img className="h-[90%] w-auto" src={icon} alt="" />
                 <img className="h-[90%] w-auto" src={icon} alt="" />
                 <img className="h-[90%] w-auto" src={icon} alt="" />
@@ -341,18 +339,18 @@ export default function About() {
              </div>
             {/* WHAT I DO */}
             <div
-              className={`ph-fade flex items-center gap-3 md:gap-12 mb-6 md:mb-8 ml-0 md:ml-52 ${entered ? "go" : ""}`}
+              className={`ph-fade flex items-center gap-3 md:gap-12 mb-16 md:mb-8 ml-35 md:ml-52 ${entered ? "go" : ""}`}
               style={{ transitionDelay:"0.5s" }}
             >
-              <span style={{ fontSize: "11px", color:"#1a0a14", opacity:0.4, fontFamily:"'Bebas Neue',sans-serif" }}>◀</span>
-              <span style={{ fontFamily:"'Bebas Neue',sans-serif", letterSpacing:"0.25em", color:"#1a0a14", fontSize: "11px" }}>WHAT I DO</span>
-              <span style={{ fontSize: "11px", color:"#1a0a14", opacity:0.4, fontFamily:"'Bebas Neue',sans-serif" }}>▶</span>
+              <span style={{ fontSize: "11px", color:"#1a0a14", opacity:0.4, fontFamily: "PPEditorialNew" }}>◀</span>
+              <span style={{ fontFamily: "PPEditorialNew", letterSpacing:"0.25em", color:"#1a0a14", fontSize: "11px" }}>WHAT I DO</span>
+              <span style={{ fontSize: "11px", color:"#1a0a14", opacity:0.4, fontFamily: "PPEditorialNew" }}>▶</span>
             </div>
 
             {/* Quote */}
             <blockquote
               className={entered ? "ph-quote-go" : ""}
-              style={{ fontFamily:"'Playfair Display',serif", fontStyle:"italic",textAlign:'center', fontWeight:400, color:"#1a0a14", lineHeight:1.2, fontSize:"clamp(20px,5vw,44px)", maxWidth: window.innerWidth < 768 ? "100%" : 520, margin:0 }}
+              style={{ fontFamily: "PPEditorialNew", fontStyle:"italic",textAlign:'center', fontWeight:400, color:"#1a0a14", lineHeight:1.2, fontSize:"clamp(30px,5vw,44px)", maxWidth: window.innerWidth < 768 ? "100%" : 520, margin:0 }}
             >
               {quoteWords.map((w, i) => (
                 <span key={i} className="ph-qword" style={{ "--wi": i }}>{w}</span>

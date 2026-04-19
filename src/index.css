@@ -61,27 +61,8 @@ li {
 }
 
 @font-face {
-  font-family: 'GermaniaOne';
-  src: url('/GermaniaOne-Regular.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'Compacta';
-  src: url('/unicode.compacta.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-}
-@font-face {
   font-family: 'FleurDeLeah';
   src: url('/FleurDeLeah-Regular.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'thunder-blackl';
-  src: url('/Thunder-BlackLC.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
@@ -94,18 +75,13 @@ li {
 }
 
 @font-face {
-  font-family: 'PPPlayground';
-  src: url('/PPPlayground-Medium.otf') format('opentype');
-  font-weight: 500;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'Splash';
-  src: url('/Splash-Regular.ttf') format('truetype');
+  font-family: 'Compacta';
+  src: url('/unicode.compacta.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
+
+/* Google Fonts replaced with system fallbacks */
 
 @keyframes blob {
   0%, 100% {

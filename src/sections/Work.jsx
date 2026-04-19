@@ -5,15 +5,15 @@ import fl from "../assets/1.avif";
 import fl1 from "../assets/3.avif";
 import fl2 from "../assets/2.avif";
 
-import img1 from "../assets/img1.jpg";
-import img2 from "../assets/img2.jpg";
-import img3 from "../assets/img3.jpg";
-import img4 from "../assets/img4.jpg";
-import img5 from "../assets/img5.jpg";
-import img6 from "../assets/img6.jpg";
-import img7 from "../assets/img7.jpg";
-import img8 from "../assets/img8.jpg";
-import img9 from "../assets/img9.jpg";
+import img1 from "../assets/project1img1.png";
+import img2 from "../assets/project1img2.png";
+import img3 from "../assets/project1img3.png";
+import img4 from "../assets/project2img1.png";
+import img5 from "../assets/project2img2.png";
+import img6 from "../assets/project3img1.png";
+import img7 from "../assets/project3img2.png";
+import img8 from "../assets/24.jpg";
+import img9 from "../assets/project3img3.png";
 import { motion, useMotionValue, useSpring, AnimatePresence } from "framer-motion";
 import GridDistortion from "../components/GridDistortion";
 
@@ -163,17 +163,17 @@ const HoverImg = ({ src, alt, className }) => (
   />
 );
 
-// ─── Bullet paragraph with hover line expand ──────────────────────────────────
+// ─── Bullet paragraph ──────────────────────────────────────────────────────────
 const BulletParagraph = ({ children, delay = 0 }) => (
   <motion.p
     initial={{ x: -30, opacity: 0 }}
     whileInView={{ x: 0, opacity: 1 }}
     transition={{ duration: 0.5, delay }}
     viewport={{ once: true }}
-    className="leading-relaxed group flex items-start gap-3"
+    className="leading-relaxed flex items-start gap-3"
     style={{ fontFamily: 'PPEditorialNew', letterSpacing: '0.08em' }}
   >
-    <span className="inline-block mt-2 h-2 w-4 flex-shrink-0 bg-[#1A0A14] transition-all duration-300 group-hover:w-6 group-hover:bg-orange-500" />
+    <span className="inline-block mt-2 h-2 w-4 shrink-0 bg-[#1A0A14]" />
     <span>{children}</span>
   </motion.p>
 );
@@ -243,7 +243,7 @@ const MobileProjectCard = ({ indicator, title, desc1, desc2, images, projectUrls
     {/* Images */}
     <div className="flex gap-3 mb-6">
       {images.map((src, i) => (
-        <div key={i} className="flex-1 aspect-[3/4] overflow-hidden rounded-sm">
+        <div key={i} className="flex-1 aspect-3/4 overflow-hidden rounded-sm">
           <ImageWithViewButton
             imageSrc={src}
             projectUrl={projectUrls[i] || projectUrls[0] || "#"}
@@ -264,7 +264,7 @@ const MobileProjectCard = ({ indicator, title, desc1, desc2, images, projectUrls
           rotate: { duration: 5, repeat: Infinity, ease: "linear" },
         }}
         viewport={{ once: true }}
-        className="h-10 w-10 rounded-full flex-shrink-0"
+        className="h-10 w-10 rounded-full shrink-0"
       >
         <img className="w-full h-full object-cover rounded-full" src={indicator} alt="" />
       </motion.div>
@@ -373,7 +373,7 @@ const Work = ({ isReady = true }) => {
           overlayWord="INTERFACE"
           overlayScript="Craft"
           images={[img1, img2, img3]}
-          projectUrls={["https://1earthproperties.com", "https://1earthproperties.com"]}
+          projectUrls={["https://oneearthproperties.co.in/", "https://oneearthproperties.co.in/"]}
           desc1="1Earth Properties is designed as a modern real estate platform that brings clarity and elegance to property discovery. The experience is crafted to feel intuitive."
           desc2="Every interaction is thoughtfully refined to create a seamless journey, combining smooth transitions and structured design to deliver a polished browsing experience."
         />
@@ -385,15 +385,15 @@ const Work = ({ isReady = true }) => {
           overlayWord="INTERACTIVE"
           overlayScript="Design"
           images={[img4, img5]}
-          projectUrls={["https://auremont.com", "https://auremont.com"]}
+          projectUrls={["https://auremont.vercel.app/", "https://auremont.vercel.app/"]}
           desc1="Auremont is shaped as a narrative-driven real estate platform, where each project is presented as a story rather than just a listing."
           desc2="The experience focuses on highlighting the vision behind each property, blending storytelling with structured presentation to create a refined journey."
         />
 
-        {/* Project 3 — third entry */}
+        {/* Project 3 — Learnkins */}
         <div className="px-4 mb-16">
           <div className="grid grid-cols-2 gap-3 mb-6">
-            <div className="aspect-[3/4] overflow-hidden">
+            <div className="aspect-3/4 overflow-hidden">
               <GridDistortion
                 imageSrc={img6}
                 grid={70}
@@ -433,7 +433,7 @@ const Work = ({ isReady = true }) => {
               animate={{ rotate: 360 }}
               transition={{ scale: { duration: 0.5 }, rotate: { duration: 5, repeat: Infinity, ease: "linear" } }}
               viewport={{ once: true }}
-              className="h-10 w-10 rounded-full flex-shrink-0"
+              className="h-10 w-10 rounded-full shrink-0"
             >
               <img className="w-full h-full object-cover rounded-full" src={fl2} alt="" />
             </motion.div>
@@ -444,15 +444,15 @@ const Work = ({ isReady = true }) => {
               viewport={{ once: true }}
               className="text-2xl font-serif text-[#1A0A14]"
             >
-              Auremont
+              Learnkins
             </motion.h3>
           </div>
           <div className="space-y-3 text-sm">
             <BulletParagraph delay={0.1}>
-              Auremont is shaped as a narrative-driven real estate platform, where each project is presented as a story rather than just a listing.
+              Learnkins is an innovative learning platform designed for students to study through interactive games and engaging activities while maintaining detailed progress records.
             </BulletParagraph>
             <BulletParagraph delay={0.25}>
-              The experience focuses on highlighting the vision behind each property, blending storytelling with structured presentation.
+              Features include comprehensive admin panel for educators, robust parental control system for guardians, progress tracking, and all essential tools for effective learning management.
             </BulletParagraph>
           </div>
         </div>
@@ -465,7 +465,7 @@ const Work = ({ isReady = true }) => {
     <section
       ref={sectionRef}
       id="work"
-      className="relative h-screen border-b-1 border-b-[#1A0A14] overflow-hidden bg-white"
+      className="relative h-screen border-b border-b-[#1A0A14] overflow-hidden bg-white"
     >
       <div
         ref={trackRef}
@@ -546,11 +546,14 @@ const Work = ({ isReady = true }) => {
                 <div className="h-140 w-lg overflow-hidden">
                   <ImageWithViewButton
                     imageSrc={img1}
-                    projectUrl="https://1earthproperties.com"
-                    className="h-full w-full"
+                    projectUrl="https://oneearthproperties.co.in/"
+                    className="h-full w-full object-cover"
                   />
                 </div>
-                <div className="overflow-hidden">
+                <div className="pt-2">
+                  <p style={{ fontFamily: 'PPEditorialNew' }} className="text-sm text-[#1A0A14]">Modern real estate platform interface with intuitive navigation</p>
+                </div>
+                <div className="overflow-hidden" style={{marginTop: '1.5rem'}}>
                   <motion.h2
                     className="font-sans text-gray-500 leading-relaxed"
                     initial={{ y: "100%", opacity: 0 }}
@@ -558,34 +561,33 @@ const Work = ({ isReady = true }) => {
                     transition={{ duration: 0.7, ease: "easeOut" }}
                     viewport={{ once: true }}
                   >
-                    error in perception <br />
-                    not everything is meant to be understood
+                   
                   </motion.h2>
                 </div>
               </div>
               <div className="w-full h-full pl-10 pt-17">
                 <div className="w-full h-1/2">
-                  <div className="w-80 h-[85%] overflow-hidden">
+                  <div className="w-80 min-h-64 overflow-hidden">
                     <ImageWithViewButton
                       imageSrc={img2}
-                      projectUrl="https://1earthproperties.com"
-                      className="h-full w-full"
+                      projectUrl="https://oneearthproperties.co.in/"
+                      className="h-full w-full object-cover"
                     />
                   </div>
                   <div className="pt-2">
-                    <h2 className="text-md text-gray-700">Parallel states drifting without direction</h2>
+                    <p style={{ fontFamily: 'PPEditorialNew' }} className="text-sm text-[#1A0A14]">Property discovery experience enhanced with smooth visual transitions</p>
                   </div>
                 </div>
                 <div className="w-full h-1/2">
-                  <div className="w-80 h-[85%] overflow-hidden">
+                  <div className="w-80 min-h-64 overflow-hidden">
                     <ImageWithViewButton
                       imageSrc={img3}
-                      projectUrl="https://1earthproperties.com"
-                      className="h-full w-full scale-120"
+                      projectUrl="https://oneearthproperties.co.in/"
+                      className="h-full w-full object-cover"
                     />
                   </div>
                   <div className="pt-2">
-                    <h2 className="text-md text-gray-700">Something almost real</h2>
+                    <p style={{ fontFamily: 'PPEditorialNew' }} className="text-sm text-[#1A0A14]">Detailed property showcase with comprehensive information layout design</p>
                   </div>
                 </div>
               </div>
@@ -655,27 +657,27 @@ const Work = ({ isReady = true }) => {
             {/* ── Project 2 images ── */}
             <div className="gap-10 flex h-160 z-20 w-5xl">
               <div className="h-full w-1/2">
-                <div className="h-[85%] w-full overflow-hidden">
+                <div className="h-4/5 w-full overflow-hidden">
                   <ImageWithViewButton
                     imageSrc={img4}
-                    projectUrl="https://auremont.com"
-                    className="h-full w-full"
+                    projectUrl="https://auremont.vercel.app/"
+                    className="h-full w-full object-cover"
                   />
                 </div>
                 <div className="pt-4">
-                  <h2 className="text-[#1A0A14]">manish</h2>
+                  <p style={{ fontFamily: 'PPEditorialNew' }} className="text-sm text-[#1A0A14]">Narrative-driven property presentation telling compelling development stories</p>
                 </div>
               </div>
               <div className="h-full w-1/2 pt-17">
-                <div className="h-[90%] w-full overflow-hidden">
+                <div className="h-5/6 w-full overflow-hidden">
                   <ImageWithViewButton
                     imageSrc={img5}
-                    projectUrl="https://auremont.com"
-                    className="h-full w-full"
+                    projectUrl="https://auremont.vercel.app/"
+                    className="h-full w-full object-cover"
                   />
                 </div>
                 <div className="pt-4">
-                  <h2 className="text-[#1A0A14]">manish</h2>
+                  <p style={{ fontFamily: 'PPEditorialNew' }} className="text-sm text-[#1A0A14]">Immersive journey through architectural vision and project excellence</p>
                 </div>
               </div>
             </div>
@@ -723,18 +725,18 @@ const Work = ({ isReady = true }) => {
                     viewport={{ once: true }}
                     className="text-4xl mt-4 font-serif mb-6"
                   >
-                    Auremont
+                    Learnkins
                   </motion.h2>
                   <div className="space-y-4">
                     <BulletParagraph delay={0.2}>
-                      Auremont is shaped as a narrative-driven real estate platform, where each
-                      project is presented as a story rather than just a listing. It invites users
-                      to explore developments through a more immersive and meaningful perspective.
+                      Learnkins is an innovative learning platform designed for students to study
+                      through interactive games and engaging activities while maintaining detailed
+                      progress records and achievement tracking throughout their learning journey.
                     </BulletParagraph>
                     <BulletParagraph delay={0.4}>
-                      The experience focuses on highlighting the vision behind each property,
-                      blending storytelling with structured presentation to create a refined and
-                      engaging journey through the company's portfolio.
+                      Features include comprehensive admin panel for educators, robust parental control
+                      system for guardians, detailed analytics, and all essential tools required for
+                      effective learning management and student engagement.
                     </BulletParagraph>
                   </div>
                 </div>
@@ -745,32 +747,40 @@ const Work = ({ isReady = true }) => {
             <div className="w-5xl h-170 z-20 flex items-center">
               <div className="h-full w-4/7">
                 <div className="h-105 w-full">
-                  <div className="h-[87%] w-full overflow-hidden">
+                  <div className="h-70 w-full overflow-hidden">
                     <ImageWithViewButton
                       imageSrc={img6}
-                      projectUrl="https://example3.com"
-                      className="h-full w-full"
+                      projectUrl="https://learnkins.com/"
+                      className="h-full w-full object-cover"
                     />
                   </div>
-                  <div className="w-full pt-3">manish</div>
+                  <div className="w-full pt-3">
+                    <p style={{ fontFamily: 'PPEditorialNew' }} className="text-sm text-[#1A0A14]">Game-based learning interface where students play and progress together</p>
+                  </div>
                 </div>
                 <div className="w-full h-65">
-                  <div className="h-[87%] w-5/8 ml-54 overflow-hidden">
+                  <div className="h-50 w-5/8 ml-54 overflow-hidden">
                     <ImageWithViewButton
                       imageSrc={img9}
-                      projectUrl="https://example3.com"
-                      className="h-full w-full"
+                      projectUrl="https://learnkins.com/"
+                      className="h-full w-full object-cover"
                     />
+                  </div>
+                  <div className="w-full ml-54 pt-3">
+                    <p style={{ fontFamily: 'PPEditorialNew' }} className="text-sm text-[#1A0A14]">Admin panel dashboard with student progress tracking and analytics</p>
                   </div>
                 </div>
               </div>
               <div className="h-full w-2/6 pt-60 ml-5">
-                <div className="h-60 w-full overflow-hidden">
+                <div className="min-h-[150px] w-full overflow-hidden">
                   <ImageWithViewButton
                     imageSrc={img7}
-                    projectUrl="https://example3.com"
-                    className="h-full w-full"
+                    projectUrl="https://learnkins.com/"
+                    className="h-full w-full object-cover"
                   />
+                </div>
+                <div className="pt-4">
+                  <p style={{ fontFamily: 'PPEditorialNew' }} className="text-sm text-[#1A0A14]">Parental control system for monitoring student learning and achievements</p>
                 </div>
               </div>
             </div>

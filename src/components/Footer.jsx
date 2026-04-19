@@ -7,16 +7,23 @@ import contactfSvg from "../assets/contactf.svg";
 const WavyBadge = ({ size = 130, delay = 0 }) => {
   const [hovered, setHovered] = useState(false);
   const id = `wavy-${delay}-${size}`;
+  
+  const openGmailCompose = () => {
+    const subject = encodeURIComponent('Project Inquiry');
+    const body = encodeURIComponent('Hi Manish,\n\nI would like to discuss a project opportunity with you.\n\nBest regards');
+    window.open(`https://mail.google.com/mail/?view=cm&fs=1&to=manishkumar925657@gmail.com&su=${subject}&body=${body}`, '_blank');
+  };
 
   return (
     <motion.div
-      className="relative cursor-pointer flex-shrink-0"
+      className="relative cursor-pointer shrink-0"
       style={{ width: size, height: size }}
       initial={{ scale: 0.7, opacity: 0, rotate: -15 }}
       animate={{ scale: 1, opacity: 1, rotate: 0 }}
       transition={{ duration: 0.7, delay, ease: [0.22, 1, 0.36, 1] }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
+      onClick={openGmailCompose}
     >
       {/* contactf SVG background with blob colors */}
       <motion.img
@@ -81,7 +88,7 @@ const MarqueeStrip = () => {
   const [hovered, setHovered] = useState(false);
   return (
     <div
-      className="overflow-hidden border-b border-gray-200 bg-gradient-to-r from-purple-950 via-purple-900 to-purple-950"
+      className="overflow-hidden border-b border-gray-200 bg-linear-to-r from-purple-950 via-purple-900 to-purple-950"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
@@ -92,7 +99,7 @@ const MarqueeStrip = () => {
       >
         {/* Repeating marquee items */}
         {[0, 1,2,3].map((key) => (
-          <div key={key} className="flex items-center gap-2 md:gap-12 flex-shrink-0">
+          <div key={key} className="flex items-center gap-2 md:gap-12 shrink-0">
             {/* Left badge */}
            
             
@@ -123,12 +130,14 @@ const MarqueeStrip = () => {
 };
 
 /* ─── Fill button ───────────────────────────────────────────────────────────── */
-const FillButton = ({ children, href = "#", arrow = false }) => {
+const FillButton = ({ children, href = "#", arrow = false, target = "_self", rel = "" }) => {
   const [hovered, setHovered] = useState(false);
   return (
     <motion.a
       href={href}
-      className="relative inline-flex items-center gap-2 px-6 py-3 border border-white rounded-full overflow-hidden cursor-pointer no-underline font-medium text-xs uppercase tracking-widest transition-colors z-10 flex-shrink-0"
+      target={target}
+      rel={rel}
+      className="relative inline-flex items-center gap-2 px-6 py-3 border border-white rounded-full overflow-hidden cursor-pointer no-underline font-medium text-xs uppercase tracking-widest transition-colors z-10 shrink-0"
       style={{ color: hovered ? "#1a1a1a" : "#fff", fontFamily: "'DM Sans', sans-serif" }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
@@ -172,7 +181,7 @@ const SocialLink = ({ num, label, href = "#", delay = 0 }) => {
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      <span className="flex items-center justify-center w-[18px] h-[18px] rounded-full border transition-all flex-shrink-0 text-[0.58rem]"
+      <span className="flex items-center justify-center w-4.5 h-4.5 rounded-full border transition-all shrink-0 text-[0.58rem]"
         style={{
           borderColor: hovered ? "#fbbf24" : "#6b7280",
           color: hovered ? "#fbbf24" : "#9ca3af",
@@ -191,7 +200,7 @@ const ScrollTopBtn = () => {
   const [hovered, setHovered] = useState(false);
   return (
     <motion.button
-      className="w-[42px] h-[42px] rounded-full cursor-pointer flex items-center justify-center border transition-all"
+      className="w-10.5 h-10.5 rounded-full cursor-pointer flex items-center justify-center border transition-all"
       style={{
         background: hovered ? "#fff" : "transparent",
         borderColor: hovered ? "#fff" : "#6b7280",
@@ -227,32 +236,50 @@ const Footer = () => {
   const navigate = useNavigate();
   return (
   <>
-    <style>{`@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital@1&family=DM+Sans:wght@400;500&display=swap');`}</style>
+    <footer id="contact" className="bg-linear-to-r pt-10 from-purple-950 via-purple-900 to-purple-950">
 
-    <footer id="contact" className="bg-gradient-to-r pt-10 from-purple-950 via-purple-900 to-purple-950">
+      {/* ── MARQUEE (desktop only) ── */}
+      <div className="hidden md:block">
+        <MarqueeStrip />
+      </div>
 
-      {/* ── MARQUEE ── */}
-      <MarqueeStrip />
+      {/* ── MOBILE CTA SECTION ── */}
+      <div className="md:hidden px-4 py-8 border-b border-gray-200 text-center">
+        <h2 style={{ fontFamily: "Compacta" }} className="text-4xl font-bold text-white mb-3">
+          LET'S CONNECT
+        </h2>
+        <p className="text-gray-300 text-sm mb-6">I'd love to hear from you. Send me a message!</p>
+        <motion.a
+          href="https://mail.google.com/mail/?view=cm&fs=1&to=manishkumar925657@gmail.com&su=Project%20Inquiry&body=Hi%20Manish%2C%0A%0AI%20would%20like%20to%20discuss%20a%20project%20opportunity%20with%20you.%0A%0ABest%20regards"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-block px-6 py-3 bg-linear-to-r from-pink-500 to-pink-600 text-white font-semibold rounded-lg hover:shadow-lg transition-shadow"
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+        >
+          Send Email
+        </motion.a>
+      </div>
 
       {/* ── MIDDLE ROW ── */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 md:gap-8 py-6 md:py-8 px-4 md:px-[clamp(20px,5vw,60px)]">
         {/* Socials */}
         <div className="flex gap-6 md:gap-[clamp(24px,5vw,60px)]">
           <div className="flex flex-col gap-3 md:gap-4">
-            <SocialLink num={1} label="Instagram" delay={0.1} />
-            <SocialLink num={2} label="Linked In" delay={0.15} />
-            <SocialLink num={3} label="Behance" delay={0.2} />
+            <SocialLink num={1} label="Twitter" href="https://x.com/manishkuma56415" delay={0.1} />
+            <SocialLink num={2} label="Linked In" href="https://www.linkedin.com/in/manish-kumar-765745317/" delay={0.15} />
+            <SocialLink num={3} label="GitHub" href="https://github.com/Manish546-gif" delay={0.2} />
           </div>
           <div className="flex flex-col gap-3">
-            <SocialLink num={4} label="Twitter" delay={0.2} />
-            <SocialLink num={5} label="Awwwards" delay={0.25} />
-            <SocialLink num={6} label="Dribbble" delay={0.3} />
+            <SocialLink num={4} label="Home" href="#home" delay={0.2} />
+            <SocialLink num={5} label="About" href="#about" delay={0.25} />
+            <SocialLink num={6} label="Work" href="#work" delay={0.3} />
           </div>
         </div>
 
         {/* CTAs */}
         <div className="flex flex-wrap items-center gap-2 md:gap-3">
-          <FillButton href="mailto:hello@manishkumar.com">Send a project inquiry</FillButton>
+          <FillButton href="https://mail.google.com/mail/?view=cm&fs=1&to=manishkumar925657@gmail.com&su=Project%20Inquiry&body=Hi%20Manish%2C%0A%0AI%20would%20like%20to%20discuss%20a%20project%20opportunity%20with%20you.%0A%0ABest%20regards" target="_blank" rel="noopener noreferrer">Send a project inquiry</FillButton>
           <FillButton href="#" arrow>Scroll back to top</FillButton>
           <ScrollTopBtn />
         </div>
@@ -270,7 +297,7 @@ const Footer = () => {
         <div className="flex flex-col items-center gap-1">
           <svg width="150" height="45" viewBox="0 0 120 36" style={{ overflow: "visible" }}>
             <defs><path id="arc-mk" d="M 10,34 A 55,55 0 0,1 110,34" /></defs>
-            <text fontSize="7" fill="#9ca3af" letterSpacing="2.2" fontFamily="sans-serif" textAnchor="middle">
+            <text fontSize="6" fill="#9ca3af" letterSpacing="2.2" fontFamily="sans-serif" textAnchor="middle">
               <textPath href="#arc-mk" startOffset="50%">DESIGNED AND CODED BY</textPath>
             </text>
           </svg>

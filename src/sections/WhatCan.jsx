@@ -17,8 +17,6 @@ export default function WhatICanDo() {
     const s = document.createElement("style");
     s.id = "wicdo-anim-styles";
     s.innerHTML = `
-      @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,400;1,700&family=Bebas+Neue&display=swap');
-
       /* char stagger */
       .wicdo-char {
         display: inline-block;
@@ -134,19 +132,17 @@ export default function WhatICanDo() {
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,400;1,700&family=Bebas+Neue&display=swap');
-
         .wicdo-root * { box-sizing: border-box; }
 
         .wicdo-label {
-          font-family: 'Bebas Neue', sans-serif;
+          font-family: PPEditorialNew;
           letter-spacing: 0.22em;
           font-size: 12px;
           color: #1a0a14;
         }
 
         .wicdo-italic {
-          font-family: 'Playfair Display', serif;
+          font-family: PPEditorialNew;
           font-style: italic;
           font-weight: 400;
           color: #d4607a;
@@ -162,7 +158,7 @@ export default function WhatICanDo() {
 
         .wicdo-word {
           display: block;
-          font-family: 'Compacta';
+          font-family:compacta;
           color: #1a0a14;
           line-height: 0.88;
           letter-spacing: -0.015em;
@@ -179,7 +175,7 @@ export default function WhatICanDo() {
         }
 
         .wicdo-ticker-text {
-          font-family: 'Bebas Neue', sans-serif;
+          font-family: PPEditorialNew;
           font-size: 11px;
           letter-spacing: 0.22em;
           color: #1a0a14;

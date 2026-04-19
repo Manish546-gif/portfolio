@@ -1,7 +1,6 @@
 /**
  * NAVBAR — Manish Kumar Portfolio
- * White bg, black text. Panel: white.
- * Headings: outlined pink (background) + solid pink fill (overlay) — stacked.
+ * Redesigned: smaller links, vertical image marquee (right panel), new clip animation
  */
 
 import { useState, useEffect, useRef, useCallback } from 'react'
@@ -9,9 +8,22 @@ import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence, useMotionValue, useSpring } from 'framer-motion'
 
 const EXPO = [0.76, 0, 0.24, 1]
-const CIRC = [0.85, 0, 0.15, 1]
-const PINK = '#1A0A14'          // main dark color
-const PINK_DARK = '#1A0A14'     // same dark color for hover states
+const DARK = [0.32, 0, 0.15, 1]
+const INK = '#0a0a0a'
+const INK_MID = 'rgba(10,10,10,0.4)'
+const INK_FAINT = 'rgba(10,10,10,0.07)'
+
+/* ─── placeholder image urls (Unsplash — design / code themed) ──────────── */
+const MARQUEE_IMAGES = [
+  'https://images.unsplash.com/photo-1555421689-491a97ff2040?w=400&q=80',
+  'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=400&q=80',
+  'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=400&q=80',
+  'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=400&q=80',
+  'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=400&q=80',
+  'https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w=400&q=80',
+  'https://images.unsplash.com/photo-1547658719-da2b51169166?w=400&q=80',
+  'https://images.unsplash.com/photo-1504639725590-34d0984388bd?w=400&q=80',
+]
 
 /* ── Split hover text ─────────────────────────────────────────────────────── */
 function SplitText({ text, isHovered, baseDelay = 0, className = '' }) {
@@ -19,48 +31,28 @@ function SplitText({ text, isHovered, baseDelay = 0, className = '' }) {
   return (
     <span className={`inline-flex ${className}`} aria-label={text}>
       {chars.map((char, i) => {
-        const enter = baseDelay + i * 0.02
-        const exit  = baseDelay + (chars.length - 1 - i) * 0.013
+        const enter = baseDelay + i * 0.018
+        const exit  = baseDelay + (chars.length - 1 - i) * 0.012
         return (
-          <span key={i} className="inline-flex flex-col overflow-hidden" style={{ height: '1.06em' }}>
+          <span key={i} className="inline-flex flex-col overflow-hidden" style={{ height: '1.1em' }}>
             <motion.span
-              className="inline-block leading-[1.06em]"
+              className="inline-block leading-[1.1em]"
               animate={{ y: isHovered ? '-100%' : '0%' }}
-              transition={{ duration: 0.36, ease: EXPO, delay: isHovered ? enter : exit }}
+              transition={{ duration: 0.34, ease: EXPO, delay: isHovered ? enter : exit }}
             >
               {char === ' ' ? '\u00A0' : char}
             </motion.span>
             <motion.span
-              className="inline-block leading-[1.06em]"
+              className="inline-block leading-[1.1em]"
               aria-hidden
               animate={{ y: isHovered ? '-100%' : '0%' }}
-              transition={{ duration: 0.36, ease: EXPO, delay: isHovered ? enter : exit }}
+              transition={{ duration: 0.34, ease: EXPO, delay: isHovered ? enter : exit }}
             >
               {char === ' ' ? '\u00A0' : char}
             </motion.span>
           </span>
         )
       })}
-    </span>
-  )
-}
-
-/* ── Char reveal (mount) ─────────────────────────────────────────────────── */
-function CharReveal({ text, delay = 0, className = '' }) {
-  return (
-    <span className={`inline-flex ${className}`} aria-label={text}>
-      {text.split('').map((char, i) => (
-        <span key={i} className="inline-block overflow-hidden" style={{ height: '1.1em' }}>
-          <motion.span
-            className="inline-block"
-            initial={{ y: '110%' }}
-            animate={{ y: 0 }}
-            transition={{ delay: delay + i * 0.038, duration: 0.6, ease: EXPO }}
-          >
-            {char === ' ' ? '\u00A0' : char}
-          </motion.span>
-        </span>
-      ))}
     </span>
   )
 }
@@ -86,133 +78,154 @@ function Magnetic({ children, strength = 0.22 }) {
   )
 }
 
-/* ── Big nav link ────────────────────────────────────────────────────────── */
-function BigLink({ index, label, sub, onClick, delay }) {
+/* ── Vertical auto-scrolling image marquee ───────────────────────────────── */
+function VerticalMarquee({ images }) {
+  /* duplicate for seamless loop */
+  const doubled = [...images, ...images]
+  return (
+    <div
+      style={{
+        width: '100%',
+        height: '100%',
+        overflow: 'hidden',
+        position: 'relative',
+      }}
+    >
+      {/* top fade */}
+      <div style={{
+        position: 'absolute', top: 0, left: 0, right: 0, height: '80px',
+        background: 'linear-gradient(to bottom, #fff 0%, transparent 100%)',
+        zIndex: 2, pointerEvents: 'none',
+      }} />
+      {/* bottom fade */}
+      <div style={{
+        position: 'absolute', bottom: 0, left: 0, right: 0, height: '80px',
+        background: 'linear-gradient(to top, #fff 0%, transparent 100%)',
+        zIndex: 2, pointerEvents: 'none',
+      }} />
+
+      <motion.div
+        style={{ display: 'flex', flexDirection: 'column', gap: '10px', padding: '5px' }}
+        animate={{ y: [0, -(images.length * 170)] }}
+        transition={{
+          duration: images.length * 3.2,
+          ease: 'linear',
+          repeat: Infinity,
+          repeatType: 'loop',
+        }}
+      >
+        {doubled.map((src, i) => (
+          <div
+            key={i}
+            style={{
+              width: '100%',
+              height: '155px',
+              borderRadius: '4px',
+              overflow: 'hidden',
+              flexShrink: 0,
+              border: `1px solid ${INK_FAINT}`,
+            }}
+          >
+            <img
+              src={src}
+              alt=""
+              loading="lazy"
+              style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', filter: 'grayscale(30%)' }}
+            />
+          </div>
+        ))}
+      </motion.div>
+    </div>
+  )
+}
+
+/* ── Nav link ────────────────────────────────────────────────────────────── */
+function NavLink({ index, label, sub, onClick, delay, isOpen }) {
   const [hov, setHov] = useState(false)
 
   return (
     <motion.div
-      className="relative flex items-center justify-between border-b cursor-pointer group"
-      style={{ borderColor: 'rgba(0,0,0,0.08)', paddingTop: '14px', paddingBottom: '14px' }}
-      initial={{ opacity: 0, y: 40 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay, duration: 0.7, ease: EXPO }}
+      className="relative flex items-center justify-between cursor-pointer border-b group"
+      style={{ borderColor: INK_FAINT, paddingTop: '13px', paddingBottom: '13px' }}
+      initial={{ opacity: 0, x: -30 }}
+      animate={isOpen ? { opacity: 1, x: 0 } : { opacity: 0, x: -30 }}
+      transition={{ delay, duration: 0.55, ease: EXPO }}
       onHoverStart={() => setHov(true)}
       onHoverEnd={() => setHov(false)}
       onClick={onClick}
-      whileTap={{ x: 8 }}
+      whileTap={{ x: 6 }}
     >
-      {/* Left: index + stacked heading */}
-      <div className="flex items-baseline gap-5">
-        <motion.span
-          className="font-mono tabular-nums select-none flex-shrink-0"
-          style={{ fontSize: '11px', letterSpacing: '0.12em', color: 'rgba(0,0,0,0.25)' }}
-          animate={{ color: hov ? PINK_DARK : 'rgba(0,0,0,0.25)' }}
-          transition={{ duration: 0.25 }}
-        >
-          {index}
-        </motion.span>
+      {/* index */}
+      <span
+        className="font-mono tabular-nums select-none shrink-0 mr-5"
+        style={{ fontSize: '10px', letterSpacing: '0.18em', color: INK_MID }}
+      >
+        {index}
+      </span>
 
-        {/* Stacked heading: outline behind, filled overlay on top */}
-        <div className="relative select-none leading-none" style={{ lineHeight: 0.9 }}>
-          {/* Background layer: pink outline / stroke text */}
-          <span
-            style={{
-              fontFamily: "'Cormorant Garamond','Georgia',serif",
-              fontSize: 'clamp(42px, 7vw, 96px)',
-              fontWeight: 700,
-              fontStyle: 'italic',
-              letterSpacing: '-0.02em',
-              color: PINK,
-              WebkitTextStroke: `1.5px ${PINK}`,
-              display: 'block',
-              userSelect: 'none',
-              lineHeight: 0.92,
-            }}
-          >
-            {label}
-          </span>
+      {/* label */}
+      <motion.span
+        className="flex-1"
+        style={{
+          fontFamily: "'Compacta', sans-serif",
+          fontSize: 'clamp(40px, 6vw, 78px)',
+          fontWeight: 600,
+          letterSpacing: '0.04em',
+          lineHeight: 1,
+          color: INK,
+        }}
+        animate={{ opacity: hov ? 0.45 : 1 }}
+        transition={{ duration: 0.22 }}
+      >
+        {label}
+      </motion.span>
 
-          {/* Overlay layer: solid pink fill, clips in on hover */}
-          <motion.span
-            aria-hidden
-            style={{
-              fontFamily: "'Cormorant Garamond','Georgia',serif",
-              fontSize: 'clamp(42px, 7vw, 96px)',
-              fontWeight: 700,
-              fontStyle: 'italic',
-              letterSpacing: '-0.02em',
-              color: PINK,
-              display: 'block',
-              userSelect: 'none',
-              lineHeight: 0.92,
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              clipPath: hov ? 'inset(0 0% 0 0)' : 'inset(0 100% 0 0)',
-              transition: `clip-path 0.55s cubic-bezier(0.76,0,0.24,1) ${delay * 0.1}s`,
-            }}
-          >
-            {label}
-          </motion.span>
-        </div>
-      </div>
-
-      {/* Right: sub label + arrow */}
-      <div className="flex items-center gap-4 flex-shrink-0">
+      {/* sub + arrow */}
+      <div className="flex items-center gap-3 shrink-0">
         <motion.span
           className="hidden md:block font-medium uppercase"
-          style={{ fontSize: '10px', letterSpacing: '0.2em', color: 'rgba(0,0,0,0.35)' }}
-          animate={{ x: hov ? 0 : 6, opacity: hov ? 0.8 : 0 }}
-          transition={{ duration: 0.3, ease: EXPO }}
+          style={{ fontSize: '9px', letterSpacing: '0.28em', color: INK_MID }}
+          animate={{ x: hov ? 0 : 8, opacity: hov ? 1 : 0 }}
+          transition={{ duration: 0.28, ease: EXPO }}
         >
           {sub}
         </motion.span>
         <motion.span
-          style={{ fontSize: '20px', lineHeight: 1, color: PINK }}
-          animate={{ x: hov ? 0 : -10, opacity: hov ? 1 : 0, rotate: hov ? 0 : -20 }}
-          transition={{ duration: 0.3, ease: EXPO }}
+          style={{ fontSize: '18px', lineHeight: 1, color: INK }}
+          animate={{ x: hov ? 0 : -8, opacity: hov ? 1 : 0, rotate: hov ? 0 : -20 }}
+          transition={{ duration: 0.28, ease: EXPO }}
         >
           ↗
         </motion.span>
       </div>
-
-      {/* Hover fill bar */}
-      <motion.div
-        className="absolute inset-0 pointer-events-none"
-        style={{ backgroundColor: `${PINK}12`, originX: 0 }}
-        initial={false}
-        animate={{ scaleX: hov ? 1 : 0, transformOrigin: '0% 50%' }}
-        transition={{ duration: 0.4, ease: EXPO }}
-      />
     </motion.div>
   )
 }
 
-/* ── Social pill ─────────────────────────────────────────────────────────── */
-function SocialLink({ label, href, delay }) {
+/* ── Social link ─────────────────────────────────────────────────────────── */
+function SocialLink({ label, href, delay, isOpen }) {
   const [hov, setHov] = useState(false)
   return (
     <motion.a
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="relative inline-block pb-[2px] cursor-pointer"
-      style={{ color: PINK, fontSize: '10px', letterSpacing: '0.16em' }}
-      initial={{ opacity: 0, y: 14 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay, duration: 0.5, ease: EXPO }}
+      className="relative inline-block pb-0.5 cursor-pointer"
+      style={{ color: INK, fontSize: '9px', letterSpacing: '0.22em' }}
+      initial={{ opacity: 0, y: 10 }}
+      animate={isOpen ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
+      transition={{ delay, duration: 0.45, ease: EXPO }}
       onHoverStart={() => setHov(true)}
       onHoverEnd={() => setHov(false)}
-      whileHover={{ color: PINK_DARK }}
     >
       <SplitText text={label} isHovered={hov} className="font-bold uppercase tracking-[0.16em]" />
       <motion.span
         className="absolute bottom-0 left-0 h-px w-full"
-        style={{ backgroundColor: PINK }}
-        initial={false}
-        animate={hov ? { scaleX: 1, transformOrigin: '0% 50%' } : { scaleX: 0, transformOrigin: '100% 50%' }}
-        transition={{ duration: 0.35, ease: EXPO }}
+        style={{ backgroundColor: INK }}
+        animate={hov
+          ? { scaleX: 1, transformOrigin: '0% 50%' }
+          : { scaleX: 0, transformOrigin: '100% 50%' }}
+        transition={{ duration: 0.32, ease: EXPO }}
       />
     </motion.a>
   )
@@ -224,39 +237,17 @@ function SocialLink({ label, href, delay }) {
 export default function Navbar() {
   const navigate = useNavigate()
   const [isOpen, setIsOpen] = useState(false)
-  const [time, setTime] = useState('')
-  const [scrolled, setScrolled] = useState(false)
   const [isHidden, setIsHidden] = useState(false)
   const [lastScrollY, setLastScrollY] = useState(0)
 
   useEffect(() => {
-    const tick = () => {
-      const n = new Date()
-      setTime(n.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }))
-    }
-    tick()
-    const id = setInterval(tick, 1000)
-    return () => clearInterval(id)
-  }, [])
-
-  useEffect(() => {
     const onScroll = () => {
-      const currentScrollY = window.scrollY
-      
-      // Show navbar when scrolling up or near top
-      if (currentScrollY < lastScrollY || currentScrollY < 100) {
-        setIsHidden(false)
-      } 
-      // Hide navbar when scrolling down
-      else if (currentScrollY > lastScrollY && currentScrollY > 100) {
-        setIsHidden(true)
-      }
-      
-      setLastScrollY(currentScrollY)
-      setScrolled(currentScrollY > 20)
+      const cy = window.scrollY
+      if (cy < lastScrollY || cy < 100) setIsHidden(false)
+      else if (cy > lastScrollY && cy > 100) setIsHidden(true)
+      setLastScrollY(cy)
     }
-    
-    window.addEventListener('scroll', onScroll)
+    window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [lastScrollY])
 
@@ -280,312 +271,246 @@ export default function Navbar() {
 
   return (
     <>
-      {/* ════════════════════════════════════════════════
-          TOP BAR — transparent, slides up on scroll down
-      ════════════════════════════════════════════════ */}
+      {/* ══ TOP BAR ══════════════════════════════════════════════ */}
       <motion.header
-        className="fixed top-0 left-0 right-0 z-[100]"
-        style={{
-          backgroundColor: 'transparent',
-          backdropFilter: 'none',
-          borderBottom: '1px solid transparent',
-          transition: 'background-color 0.4s ease, border-color 0.4s ease, backdrop-filter 0.4s ease',
-        }}
-        initial={{ opacity: 0 }}
-        animate={{ 
+        className="fixed top-0 left-0 right-0 z-100"
+        initial={{ y: -60, opacity: 0 }}
+        animate={{
+          y: isHidden ? '-100%' : 0,
           opacity: 1,
-          y: isHidden ? '-100%' : '0%'
         }}
-        transition={{ 
-          opacity: { duration: 0.5, delay: 0.1 },
-          y: { duration: 0.3, ease: EXPO }
-        }}
+        transition={{ duration: 0.45, ease: EXPO }}
       >
-        <div className="flex items-center justify-between px-6 md:px-10 py-5">
+        {/* thin top line */}
+        <div style={{ height: '1px', backgroundColor: INK_FAINT }} />
 
+        <div
+          className="flex items-center justify-between px-6 md:px-10 py-4"
+          style={{ backgroundColor: 'rgba(255,255,255,0)', backdropFilter: 'blur(12px)' }}
+        >
           {/* Logo */}
           <Magnetic strength={0.18}>
             <button
-              className="flex flex-col leading-none cursor-pointer bg-transparent border-none p-0 select-none"
+              className="cursor-pointer bg-transparent border-none p-0 select-none"
               onClick={() => scrollTo('home')}
               aria-label="Home"
             >
-              <div className="overflow-hidden" style={{ height: '1.1em' }}>
-                <motion.span
-                  className="block font-black uppercase"
-                  style={{
-                    fontFamily: "'Cormorant Garamond','Georgia',serif",
-                    fontSize: '22px',
-                    letterSpacing: '0.06em',
-                    color: PINK,
-                    fontWeight: 700,
-                  }}
-                  initial={{ y: '110%' }}
-                  animate={{ y: 0 }}
-                  transition={{ delay: 0.2, duration: 0.6, ease: EXPO }}
-                >
-                  Manish
-                </motion.span>
-              </div>
-              <div className="overflow-hidden" style={{ height: '1.1em' }}>
-                <motion.span
-                  className="block font-black uppercase ml-3"
-                  style={{
-                    fontFamily: "'Cormorant Garamond','Georgia',serif",
-                    fontSize: '22px',
-                    letterSpacing: '0.06em',
-                    color: PINK,
-                    fontWeight: 700,
-                    fontStyle: 'italic',
-                  }}
-                  initial={{ y: '110%' }}
-                  animate={{ y: 0 }}
-                  transition={{ delay: 0.32, duration: 0.6, ease: EXPO }}
-                >
-                  Kumar
-                </motion.span>
-              </div>
+              <span
+                style={{
+                  fontFamily: "'PPEditorialNew', sans-serif",
+                  fontSize: '15px',
+                  fontWeight: 700,
+                  letterSpacing: '0.14em',
+                  color: INK,
+                  textTransform: 'uppercase',
+                }}
+              >
+                Manish<span style={{ fontStyle: 'italic', fontWeight: 400, marginLeft: 6 }}>Kumar</span>
+              </span>
             </button>
           </Magnetic>
 
-          {/* Centre role tag */}
-          <motion.span
+          {/* Centre tag */}
+          <span
             className="hidden md:block font-medium uppercase"
-            style={{ 
-              fontSize: '9px', 
-              letterSpacing: '0.24em', 
-              color: PINK, 
-              fontFamily: "'DM Sans','Inter',sans-serif",
-            }}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.5, duration: 0.5 }}
+            style={{ fontSize: '9px', letterSpacing: '0.32em', color: INK_MID }}
           >
             Designer &amp; Developer
-          </motion.span>
+          </span>
 
           {/* Menu trigger */}
           <Magnetic strength={0.28}>
             <motion.button
               onClick={() => setIsOpen(!isOpen)}
               className="flex items-center gap-3 bg-transparent border-none cursor-pointer p-0"
-              whileTap={{ scale: 0.88 }}
+              whileTap={{ scale: 0.9 }}
               aria-label="Toggle menu"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.4, duration: 0.5 }}
-              style={{ color: PINK }}
+              style={{ color: INK }}
             >
-              <motion.span
+              <span
                 className="font-bold uppercase hidden sm:block"
-                style={{ fontSize: '10px', letterSpacing: '0.2em', fontFamily: "'DM Sans','Inter',sans-serif", color: PINK }}
-                animate={{ opacity: isOpen ? 0 : 1, x: isOpen ? 6 : 0 }}
-                transition={{ duration: 0.22, ease: EXPO }}
+                style={{ fontSize: '9px', letterSpacing: '0.28em', color: INK }}
               >
                 {isOpen ? 'Close' : 'Menu'}
-              </motion.span>
-              <div className="flex flex-col gap-[5px] w-[26px]">
-                <motion.span className="block h-px w-full" style={{ backgroundColor: PINK }}
-                  animate={{ rotate: isOpen ? 45 : 0, y: isOpen ? 7 : 0 }}
-                  transition={{ duration: 0.38, ease: EXPO }} />
-                <motion.span className="block h-px" style={{ backgroundColor: PINK, width: '62%' }}
+              </span>
+
+              {/* Animated hamburger */}
+              <div className="flex flex-col gap-1.25 w-6">
+                <motion.span className="block h-px w-full bg-current"
+                  animate={{ rotate: isOpen ? 45 : 0, y: isOpen ? 6.5 : 0 }}
+                  transition={{ duration: 0.4, ease: EXPO }} />
+                <motion.span className="block h-px bg-current" style={{ width: '60%' }}
                   animate={{ scaleX: isOpen ? 0 : 1, opacity: isOpen ? 0 : 1 }}
-                  transition={{ duration: 0.22, ease: EXPO }} />
-                <motion.span className="block h-px w-full" style={{ backgroundColor: PINK }}
-                  animate={{ rotate: isOpen ? -45 : 0, y: isOpen ? -7 : 0 }}
-                  transition={{ duration: 0.38, ease: EXPO }} />
+                  transition={{ duration: 0.2, ease: EXPO }} />
+                <motion.span className="block h-px w-full bg-current"
+                  animate={{ rotate: isOpen ? -45 : 0, y: isOpen ? -6.5 : 0 }}
+                  transition={{ duration: 0.4, ease: EXPO }} />
               </div>
             </motion.button>
           </Magnetic>
         </div>
+
+        {/* thin bottom border */}
+        <div style={{ height: '1px', backgroundColor: INK_FAINT }} />
       </motion.header>
 
-      {/* ════════════════════════════════════════════════
-          FULL-SCREEN PANEL — pure white
-      ════════════════════════════════════════════════ */}
-      <motion.div
-        className="fixed inset-0 z-[99] flex flex-col"
-        style={{ backgroundColor: '#ffffff' }}
-        initial={{ clipPath: 'inset(0% 0% 100% 0%)' }}
-        animate={{ clipPath: isOpen ? 'inset(0% 0% 0% 0%)' : 'inset(0% 0% 100% 0%)' }}
-        transition={{ duration: 0.78, ease: CIRC }}
-      >
-        {/* Large pink background text — decorative */}
-        <div
-          className="absolute inset-0 pointer-events-none overflow-hidden flex items-center justify-end pr-8 md:pr-16"
-          aria-hidden
-        >
-          <span
-            style={{
-              fontFamily: "'Cormorant Garamond','Georgia',serif",
-              fontSize: 'clamp(120px, 20vw, 260px)',
-              fontWeight: 700,
-              fontStyle: 'italic',
-              color: 'transparent',
-              WebkitTextStroke: `1px ${PINK}22`,
-              letterSpacing: '-0.04em',
-              userSelect: 'none',
-              lineHeight: 1,
-              whiteSpace: 'nowrap',
-            }}
+      {/* ══ FULL-SCREEN PANEL ════════════════════════════════════ */}
+      {/*
+          New open/close animation:
+          - Opens: diagonal wipe from top-left corner outward
+          - Closes: diagonal wipe collapsing to bottom-right
+      */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            className="fixed inset-0 z-99"
+            style={{ backgroundColor: '#ffffff' }}
+            initial={{ clipPath: 'polygon(0 0, 0 0, 0 0, 0 0)' }}
+            animate={{ clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)' }}
+            exit={{ clipPath: 'polygon(100% 0, 100% 0, 100% 100%, 100% 100%)' }}
+            transition={{ duration: 0.72, ease: DARK }}
           >
-            
-          </span>
-        </div>
+            {/* ── subtle grid pattern background ──────────────── */}
+            <div
+              className="absolute inset-0 pointer-events-none"
+              style={{
+                backgroundImage: `
+                  linear-gradient(${INK_FAINT} 1px, transparent 1px),
+                  linear-gradient(90deg, ${INK_FAINT} 1px, transparent 1px)
+                `,
+                backgroundSize: '48px 48px',
+              }}
+            />
 
-        {/* Divider under top bar */}
-        <motion.div
-          className="absolute left-0 right-0 h-px"
-          style={{ top: '72px', backgroundColor: 'rgba(0,0,0,0.07)' }}
-          initial={{ scaleX: 0, transformOrigin: '0% 50%' }}
-          animate={{ scaleX: isOpen ? 1 : 0 }}
-          transition={{ duration: 0.7, delay: 0.2, ease: EXPO }}
-        />
+            {/* ── large decorative number ─────────────────────── */}
+            <div
+              className="absolute pointer-events-none select-none"
+              style={{
+                right: '0',
+                bottom: '-40px',
+                fontFamily: "'Compacta', sans-serif",
+                fontSize: 'clamp(180px, 28vw, 380px)',
+                fontWeight: 800,
+                color: 'transparent',
+                WebkitTextStroke: `1px rgba(10,10,10,0.05)`,
+                letterSpacing: '-0.04em',
+                lineHeight: 1,
+              }}
+              aria-hidden
+            >
+              MK
+            </div>
 
-        {/* ── PANEL BODY: two-column grid ───────────────────────── */}
-        <div
-          className="flex-1 grid pt-[88px]"
-          style={{ gridTemplateColumns: '1fr auto', gridTemplateRows: '1fr' }}
-        >
-          {/* LEFT — big nav links */}
-          <div className="flex flex-col justify-center px-6 md:px-14 overflow-hidden">
-            {isOpen && LINKS.map((l, i) => (
-              <BigLink
-                key={l.id}
-                index={l.index}
-                label={l.label}
-                sub={l.sub}
-                onClick={() => scrollTo(l.id)}
-                delay={0.08 + i * 0.07}
-              />
-            ))}
-          </div>
+            {/* ── divider under top bar ────────────────────────── */}
+            <div style={{ height: '57px' }} /> {/* spacer for header */}
+            <div style={{ height: '1px', backgroundColor: INK_FAINT }} />
 
-          {/* RIGHT — clean panel with Play Tetris button and essentials */}
-          <div
-            className="flex flex-col justify-between py-10 pr-6 md:pr-14 pl-6 md:pl-10 w-full md:w-auto md:min-w-[260px] lg:min-w-[300px]"
-            style={{ borderLeft: '1px solid rgba(0,0,0,0.07)' }}
-          >
-            {/* Play Tetris Button */}
-            {isOpen && (
-              <motion.button
-                onClick={() => {
-                  navigate('/tetris')
-                  setIsOpen(false)
-                }}
-                className="px-5 py-3 rounded-sm font-bold uppercase transition-all duration-300"
-                style={{
-                  fontSize: '11px',
-                  letterSpacing: '0.15em',
-                  color: '#ffffff',
-                  backgroundColor: PINK,
-                  border: `1.5px solid ${PINK}`,
-                }}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3, duration: 0.6, ease: EXPO }}
-                whileHover={{
-                  backgroundColor: '#ffffff',
-                  color: PINK,
-                }}
+            {/* ── BODY: left nav + right marquee ───────────────── */}
+            <div
+              className="flex"
+              style={{ height: 'calc(100vh - 58px)', overflow: 'hidden' }}
+            >
+              {/* LEFT — nav links + footer */}
+              <div
+                className="flex flex-col flex-1 px-6 md:px-12 lg:px-16 pt-10 pb-10"
+                style={{ overflowY: 'auto' }}
               >
-                Play Tetris
-              </motion.button>
-            )}
-
-            {/* Email and Status */}
-            {isOpen && (
-              <motion.div
-                className="flex flex-col gap-5"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.38, duration: 0.6, ease: EXPO }}
-              >
-                {/* Dot + status */}
-                <div className="flex items-center gap-2">
-                  <motion.span
-                    className="rounded-full flex-shrink-0"
-                    style={{ width: '7px', height: '7px', backgroundColor: '#4ade80' }}
-                    animate={{ scale: [1, 1.55, 1], opacity: [1, 0.45, 1] }}
-                    transition={{ duration: 2.2, repeat: Infinity, ease: 'easeInOut' }}
-                  />
-                  <span className="font-bold uppercase" style={{ fontSize: '9px', letterSpacing: '0.18em', color: PINK, fontFamily: "'DM Sans',sans-serif" }}>
-                    Available
-                  </span>
+                {/* LINKS */}
+                <div className="flex flex-col flex-1 justify-center">
+                  {LINKS.map((l, i) => (
+                    <NavLink
+                      key={l.id}
+                      index={l.index}
+                      label={l.label}
+                      sub={l.sub}
+                      onClick={() => scrollTo(l.id)}
+                      delay={0.1 + i * 0.06}
+                      isOpen={isOpen}
+                    />
+                  ))}
                 </div>
 
-                {/* Email */}
-                <div className="flex flex-col gap-1">
-                  <span className="font-bold uppercase" style={{ fontSize: '8px', letterSpacing: '0.18em', color: PINK, opacity: 0.6, fontFamily: "'DM Sans',sans-serif" }}>
-                    Email
-                  </span>
-                  <motion.a
-                    href="mailto:manishkumar925657@gmail.com"
-                    style={{ fontSize: '10px', color: PINK, letterSpacing: '0.02em', wordBreak: 'break-all', fontFamily: "'DM Sans',sans-serif" }}
-                    whileHover={{ opacity: 0.7 }}
+                {/* FOOTER row */}
+                <motion.div
+                  className="flex items-end justify-between mt-10 flex-wrap gap-6"
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.42, duration: 0.5, ease: EXPO }}
+                >
+                  {/* status + email */}
+                  <div className="flex flex-col gap-4">
+                    <div className="flex items-center gap-2">
+                      <motion.span
+                        className="rounded-full shrink-0"
+                        style={{ width: '7px', height: '7px', backgroundColor: '#22c55e' }}
+                        animate={{ scale: [1, 1.5, 1], opacity: [1, 0.4, 1] }}
+                        transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+                      />
+                      <span className="font-bold uppercase" style={{ fontSize: '9px', letterSpacing: '0.24em', color: INK }}>
+                        Available for work
+                      </span>
+                    </div>
+                    <a
+                      href="mailto:manishkumar925657@gmail.com"
+                      style={{ fontSize: '11px', color: INK_MID, letterSpacing: '0.08em' }}
+                    >
+                      manishkumar925657@gmail.com
+                    </a>
+                  </div>
+
+                  {/* socials */}
+                  <div className="flex flex-col gap-2">
+                    <span className="font-bold uppercase" style={{ fontSize: '8px', letterSpacing: '0.21em', color: INK_MID }}>
+                      Follow
+                    </span>
+                    <div className="flex gap-5">
+                      <SocialLink label="Twitter"  href="https://x.com/manishkuma56415"                          delay={0.46} isOpen={isOpen} />
+                      <SocialLink label="LinkedIn" href="https://www.linkedin.com/in/manish-kumar-765745317/"    delay={0.50} isOpen={isOpen} />
+                      <SocialLink label="GitHub"   href="https://github.com/Manish546-gif"                       delay={0.54} isOpen={isOpen} />
+                    </div>
+                  </div>
+
+                  {/* tetris */}
+                  <motion.button
+                    onClick={() => { navigate('/tetris'); setIsOpen(false) }}
+                    className="font-bold uppercase"
+                    style={{
+                      fontSize: '10px',
+                      letterSpacing: '0.24em',
+                      color: '#fff',
+                      backgroundColor: INK,
+                      border: `1px solid ${INK}`,
+                      padding: '9px 20px',
+                      cursor: 'pointer',
+                    }}
+                    whileHover={{ backgroundColor: '#fff', color: INK }}
                     transition={{ duration: 0.2 }}
                   >
-                    manishkumar<br />925657@<br />gmail.com
-                  </motion.a>
-                </div>
-              </motion.div>
-            )}
-
-            {/* Bottom: socials */}
-            {isOpen && (
-              <div className="flex flex-col gap-3">
-                <span className="font-bold uppercase" style={{ fontSize: '8px', letterSpacing: '0.15em', color: PINK, opacity: 0.6, fontFamily: "'DM Sans',sans-serif" }}>
-                  Follow
-                </span>
-                <div className="flex flex-col gap-2">
-                  <SocialLink label="Instagram" href="#" delay={0.42} />
-                  <SocialLink label="LinkedIn"  href="#" delay={0.46} />
-                  <SocialLink label="Behance"   href="#" delay={0.50} />
-                </div>
+                    Play Tetris
+                  </motion.button>
+                </motion.div>
               </div>
-            )}
-          </div>
-        </div>
 
-        {/* ── PANEL FOOTER (mobile socials) ──────────────────────── */}
-        <div
-          className="lg:hidden px-6 pb-8 pt-5 flex items-center justify-between"
-          style={{ borderTop: '1px solid rgba(0,0,0,0.07)' }}
-        >
-          {isOpen && (
-            <>
-              <div className="flex items-center gap-7">
-                <SocialLink label="Instagram" href="#" delay={0.4} />
-                <SocialLink label="LinkedIn"  href="#" delay={0.44} />
-                <SocialLink label="Behance"   href="#" delay={0.48} />
-              </div>
-              <motion.button
-                onClick={() => {
-                  navigate('/tetris')
-                  setIsOpen(false)
-                }}
-                className="px-4 py-2 rounded-sm font-bold uppercase transition-all duration-300"
+              {/* RIGHT — vertical image marquee */}
+              <motion.div
+                className="hidden md:flex"
                 style={{
-                  fontSize: '9px',
-                  letterSpacing: '0.12em',
-                  color: '#ffffff',
-                  backgroundColor: PINK,
-                  border: `1px solid ${PINK}`,
+                  width: '200px',
+                  borderLeft: `1px solid ${INK_FAINT}`,
+                  padding: '0 12px',
+                  overflow: 'hidden',
+                  position: 'relative',
                 }}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.4, duration: 0.4 }}
-                whileHover={{
-                  backgroundColor: '#ffffff',
-                  color: PINK,
-                }}
+                initial={{ opacity: 0, x: 30 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.18, duration: 0.6, ease: EXPO }}
               >
-                Play Tetris
-              </motion.button>
-            </>
-          )}
-        </div>
-      </motion.div>
+                <VerticalMarquee images={MARQUEE_IMAGES} />
+              </motion.div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   )
 }

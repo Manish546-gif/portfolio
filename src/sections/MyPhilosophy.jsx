@@ -60,8 +60,6 @@ export default function MyPhilosophy() {
     const s = document.createElement("style");
     s.id = "philosophy-anim-styles-v3";
     s.innerHTML = `
-      @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Bebas+Neue&family=DM+Mono:wght@300;400&display=swap');
-
       .phil-root-v3 { }
       .phil-root-v3 * { box-sizing: border-box; }
 
@@ -135,7 +133,7 @@ export default function MyPhilosophy() {
       .phv3-pillar:hover { background: rgba(212,96,122,.03); }
 
       .phv3-pillar-num {
-        font-family: 'DM Mono', monospace;
+        fontFamily: PPEditorialNew;
         font-size: 11px;
         color: rgba(26,10,20,0.3);
         letter-spacing: 0.06em;
@@ -151,14 +149,14 @@ export default function MyPhilosophy() {
       }
 
       .phv3-pillar-title {
-        font-family: 'Bebas Neue', sans-serif;
+        fontFamily: PPEditorialNew;
         font-size: 17px;
         letter-spacing: 0.14em;
         color: #1a0a14;
       }
 
       .phv3-pillar-tag {
-        font-family: 'DM Mono', monospace;
+        fontFamily: PPEditorialNew;
         font-size: 9px;
         letter-spacing: 0.1em;
         color: #d4607a;
@@ -172,7 +170,7 @@ export default function MyPhilosophy() {
       .phv3-pillar:hover .phv3-pillar-tag { opacity:1; transform:none; }
 
       .phv3-pillar-desc {
-        font-family: 'Playfair Display', serif;
+        fontFamily: PPEditorialNew;
         font-size: 13px;
         line-height: 1.65;
         color: rgba(26,10,20,0.6);
@@ -189,14 +187,14 @@ export default function MyPhilosophy() {
       .phv3-stats-visible .phv3-stat { opacity:1; transform:none; }
 
       .phv3-stat-val {
-        font-family: 'Bebas Neue', sans-serif;
+        fontFamily: PPEditorialNew;
         font-size: 38px;
         letter-spacing: 0.02em;
         color: #1a0a14;
         line-height: 1;
       }
       .phv3-stat-label {
-        font-family: 'DM Mono', monospace;
+        fontFamily: PPEditorialNew;
         font-size: 10px;
         letter-spacing: 0.1em;
         color: rgba(26,10,20,0.45);
@@ -215,7 +213,7 @@ export default function MyPhilosophy() {
       .phv3-process-visible .phv3-step { opacity:1; transform:none; }
 
       .phv3-step-arrow {
-        font-family: 'DM Mono', monospace;
+        fontFamily: PPEditorialNew;
         font-size: 11px;
         color: #d4607a;
         margin-top: 2px;
@@ -223,7 +221,7 @@ export default function MyPhilosophy() {
       }
 
       .phv3-step-title {
-        font-family: 'Bebas Neue', sans-serif;
+        fontFamily: PPEditorialNew;
         font-size: 13px;
         letter-spacing: 0.14em;
         color: #1a0a14;
@@ -231,7 +229,7 @@ export default function MyPhilosophy() {
       }
 
       .phv3-step-desc {
-        font-family: 'Playfair Display', serif;
+        fontFamily: PPEditorialNew;
         font-size: 12px;
         line-height: 1.55;
         color: rgba(26,10,20,0.55);
@@ -275,7 +273,7 @@ export default function MyPhilosophy() {
 
       /* ── section label ── */
       .phv3-label {
-        font-family: 'DM Mono', monospace;
+        fontFamily: PPEditorialNew;
         font-size: 10px;
         letter-spacing: 0.2em;
         color: rgba(26,10,20,0.4);
@@ -496,7 +494,7 @@ export default function MyPhilosophy() {
 
               {/* large opening quote mark */}
               <div style={{
-                fontFamily: "'Playfair Display', serif",
+                fontFamily: 'PPEditorialNew',
                 fontSize: 80,
                 color: "rgba(212,96,122,0.15)",
                 lineHeight: 1,
@@ -509,7 +507,7 @@ export default function MyPhilosophy() {
               <div
                 ref={beliefRef}
                 style={{
-                  fontFamily: "'Playfair Display', serif",
+                  fontFamily: 'PPEditorialNew',
                   fontStyle: "italic",
                   fontWeight: 400,
                   color: "#1a0a14",
@@ -523,7 +521,7 @@ export default function MyPhilosophy() {
 
               <div style={{
                 marginTop: 20,
-                fontFamily: "'DM Mono', monospace",
+                fontFamily: 'PPEditorialNew',
                 fontSize: 10,
                 letterSpacing: "0.14em",
                 color: "rgba(26,10,20,0.35)",
@@ -572,7 +570,7 @@ export default function MyPhilosophy() {
           zIndex: 3,
           gap: window.innerWidth < 768 ? 8 : 0,
         }}>
-          <span style={{ fontFamily: "'DM Mono',monospace", fontSize: 10, letterSpacing: "0.15em", color: "rgba(26,10,20,0.28)" }}>
+          <span style={{ fontFamily: 'PPEditorialNew', fontSize: 10, letterSpacing: "0.15em", color: "rgba(26,10,20,0.28)" }}>
             DESIGN × CRAFT × PURPOSE
           </span>
           <div style={{ display: "flex", gap: 6 }}>
@@ -586,7 +584,7 @@ export default function MyPhilosophy() {
               }} />
             ))}
           </div>
-          <span style={{ fontFamily: "'DM Mono',monospace", fontSize: 10, letterSpacing: "0.15em", color: "rgba(26,10,20,0.28)" }}>
+          <span style={{ fontFamily: 'PPEditorialNew', fontSize: 10, letterSpacing: "0.15em", color: "rgba(26,10,20,0.28)" }}>
             ©{new Date().getFullYear()}
           </span>
         </div>
