@@ -174,8 +174,8 @@ const Home = ({ onImageLoaded }) => {
             imageSrc={bg23}
             grid={40}
             mouse={0.06}
-            strength={0.1}
-            relaxation={0.9}
+            strength={0.01}
+            relaxation={0.6}
             className="custom-class"
             onImageLoaded={onImageLoaded}
           />

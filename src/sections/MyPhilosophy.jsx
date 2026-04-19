@@ -292,29 +292,6 @@ export default function MyPhilosophy() {
 
       /* ── Mobile responsive ── */
       @media (max-width: 768px) {
-        .phv3-char {
-          opacity: 1 !important;
-          transform: none !important;
-        }
-        .phv3-pillar {
-          opacity: 1 !important;
-          transform: none !important;
-        }
-        .phv3-stat {
-          opacity: 1 !important;
-          transform: none !important;
-        }
-        .phv3-step {
-          opacity: 1 !important;
-          transform: none !important;
-        }
-        .phv3-clip {
-          clip-path: inset(0 0% 0 0) !important;
-        }
-        .phv3-fadeup {
-          opacity: 1 !important;
-          transform: none !important;
-        }
         .phv3-pillar {
           gap: 12px;
           padding: 16px 0;

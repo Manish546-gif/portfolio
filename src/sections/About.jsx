@@ -90,7 +90,8 @@ export default function About() {
           opacity  .6s cubic-bezier(.22,1,.36,1) calc(var(--ci) * 30ms),
           transform .6s cubic-bezier(.22,1,.36,1) calc(var(--ci) * 30ms);
       }
-      .ph-chars-go .ph-char { opacity:1; transform:none; }
+      .ph-chars-go .ph-char,
+      .ph-char.go { opacity:1; transform:none; }
 
       /* italic clip reveal */
       .ph-italic-clip {
@@ -115,7 +116,8 @@ export default function About() {
         opacity:0; transform:translateY(20px);
         transition: opacity .5s ease calc(var(--wi) * 38ms), transform .5s ease calc(var(--wi) * 38ms);
       }
-      .ph-quote-go .ph-qword { opacity:1; transform:none; }
+      .ph-quote-go .ph-qword,
+      .ph-qword.go { opacity:1; transform:none; }
 
 
 
@@ -136,24 +138,6 @@ export default function About() {
         .ph-cursor,
         .ph-dot {
           display: none !important;
-        }
-        .ph-char {
-          opacity: 1 !important;
-          transform: none !important;
-        }
-        .ph-italic-clip {
-          clip-path: inset(0 0% 0 0) !important;
-        }
-        .ph-fade {
-          opacity: 1 !important;
-          transform: none !important;
-        }
-        .ph-divider {
-          transform: scaleY(1) !important;
-        }
-        .ph-qword {
-          opacity: 1 !important;
-          transform: none !important;
         }
       }
     `;

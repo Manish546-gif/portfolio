@@ -52,27 +52,12 @@ export default function WhatICanDo() {
       }
 
       @media (max-width: 768px) {
-        .wicdo-char {
-          opacity: 1 !important;
-          transform: none !important;
-          transition: none !important;
-        }
-        .wicdo-word {
-          opacity: 1 !important;
-          transform: none !important;
-        }
         .wicdo-word-rotate {
           font-size: clamp(54px, 14vw, 120px) !important;
           margin-bottom: 16px;
-          opacity: 1 !important;
-          transform: rotateX(0deg) scale(1) !important;
-          transition: none !important;
         }
         .wicdo-fade {
           font-size: 16px !important;
-          opacity: 1 !important;
-          transform: none !important;
-          transition: none !important;
         }
         .wicdo-italic {
           display: block !important;
@@ -86,9 +71,6 @@ export default function WhatICanDo() {
           text-align: center;
           white-space: normal;
           pointer-events: auto;
-          opacity: 1 !important;
-          clip-path: inset(0 0% 0 0) !important;
-          transition: none !important;
         }
         .wicdo-italic-left {
           margin-bottom: 12px;

@@ -29,7 +29,7 @@ const useLenisSmoothScroll = (enabled = true) => {
     const lenis = new Lenis({
       duration: duration,
       easing: defaultEasing,
-      smoothWheel: !isMobile, // Disable smooth wheel on mobile for native feel
+      smoothWheel: true, // Enable smooth wheel scrolling on all devices
       syncTouch: true,
       touchMultiplier: isMobile ? 1.2 : 1.0, // Faster touch scrolling on mobile
       wheelMultiplier: wheelMultiplier,
